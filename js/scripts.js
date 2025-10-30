@@ -375,22 +375,59 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function fetchAvatarsByApi(steamIds){
-        // Для демонстрации используем hardcoded аватарки
-        const hardcodedAvatars = {
-            '76561199508252956': 'https://avatars.akamai.steamstatic.com/5e4b8c8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b.png',
-            '76561199410968139': 'https://avatars.akamai.steamstatic.com/5e4b8c8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b.png',
-            '76561199583135417': 'https://avatars.akamai.steamstatic.com/5e4b8c8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b.png',
-            '76561199584531950': 'https://avatars.akamai.steamstatic.com/default.jpg',
-            '76561199851125647': 'https://avatars.akamai.steamstatic.com/default.jpg',
-            '76561199729749913': 'https://avatars.akamai.steamstatic.com/default.jpg',
-            '76561199142259766': 'https://avatars.akamai.steamstatic.com/default.jpg'
-        };
+        // Предпочитаем локальные файлы аватаров, которые вы поместите в папку `/avatars/` в корне сайта.
+        // Формат локального имени: /avatars/<steamid>.png (например /avatars/76561199508252956.png)
+        // Если локального файла нет, пробуем прокси на вашем домене, иначе используем фоллбэк.
+        const STEAM_PROXY_BASE = 'https://zoneblast.cc';
         const out = {};
-        steamIds.forEach(id => {
-            if (hardcodedAvatars[id]) {
-                out[id] = hardcodedAvatars[id];
+        if (!steamIds || steamIds.length === 0) return out;
+
+        // Сначала проверим локальные файлы параллельно
+        await Promise.all(steamIds.map(async id => {
+            try {
+                const localPath = `/avatars/${id}.png`;
+                // Попытка получить локальный файл (GET). Если файл существует — используем его.
+                const r = await fetch(localPath, { method: 'GET', cache: 'no-store' });
+                if (r && r.ok) {
+                    out[id] = localPath;
+                    return;
+                }
+            } catch (e) {
+                // ignore
             }
-        });
+            // если локального файла нет — пометим как undefined (будет обработано ниже)
+            out[id] = undefined;
+        }));
+
+        // Теперь попробуем получить отсутствующие через прокси на вашем домене
+        const missing = Object.keys(out).filter(k => !out[k]);
+        if (missing.length > 0) {
+            try {
+                const q = encodeURIComponent(missing.join(','));
+                const url = `${STEAM_PROXY_BASE}/api/steam/avatars?ids=${q}`;
+                const res = await fetch(url, { cache: 'no-store' });
+                if (res && res.ok) {
+                    const data = await res.json();
+                    if (data && typeof data === 'object') {
+                        Object.keys(data).forEach(k => { if (data[k]) out[k] = data[k]; });
+                    }
+                }
+            } catch (err) {
+                console.warn('Steam proxy fetch failed, falling back to bundled avatars:', err);
+            }
+        }
+
+        // Финальный фоллбэк — встроенные/заглушечные URL'ы (чтобы UI не ломался)
+        const hardcodedAvatars = {
+            '76561199508252956': '/images/avatar-default-1.png',
+            '76561199410968139': '/images/avatar-default-2.png',
+            '76561199583135417': '/images/avatar-default-3.png',
+            '76561199584531950': '/images/avatar-placeholder.png',
+            '76561199851125647': '/images/avatar-placeholder.png',
+            '76561199729749913': '/images/avatar-placeholder.png',
+            '76561199142259766': '/images/avatar-placeholder.png'
+        };
+        Object.keys(out).forEach(k => { if (!out[k] && hardcodedAvatars[k]) out[k] = hardcodedAvatars[k]; });
         return out;
     }
 
