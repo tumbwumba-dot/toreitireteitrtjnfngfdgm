@@ -375,59 +375,39 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function fetchAvatarsByApi(steamIds){
-        // Предпочитаем локальные файлы аватаров, которые вы поместите в папку `/avatars/` в корне сайта.
-        // Формат локального имени: /avatars/<steamid>.png (например /avatars/76561199508252956.png)
-        // Если локального файла нет, пробуем прокси на вашем домене, иначе используем фоллбэк.
+        // Загружаем аватарки и имена напрямую через прокси на Steam API
         const STEAM_PROXY_BASE = 'https://zoneblast.cc';
+        // out: steamid -> { avatar: url|string, name: string|undefined }
         const out = {};
         if (!steamIds || steamIds.length === 0) return out;
 
-        // Сначала проверим локальные файлы параллельно
-        await Promise.all(steamIds.map(async id => {
-            try {
-                const localPath = `/avatars/${id}.png`;
-                // Попытка получить локальный файл (GET). Если файл существует — используем его.
-                const r = await fetch(localPath, { method: 'GET', cache: 'no-store' });
-                if (r && r.ok) {
-                    out[id] = localPath;
-                    return;
+        // Пытаемся получить через прокси
+        try {
+            const q = encodeURIComponent(steamIds.join(','));
+            const url = `${STEAM_PROXY_BASE}/api/steam/avatars?ids=${q}`;
+            const res = await fetch(url, { cache: 'no-store' });
+            if (res && res.ok) {
+                const data = await res.json();
+                // Ожидаем формат: { "7656...": { avatar: "https://...", name: "PlayerName" }, ... }
+                if (data && typeof data === 'object') {
+                    Object.keys(data).forEach(k => {
+                        if (data[k]) {
+                            out[k] = data[k];
+                        }
+                    });
                 }
-            } catch (e) {
-                // ignore
             }
-            // если локального файла нет — пометим как undefined (будет обработано ниже)
-            out[id] = undefined;
-        }));
-
-        // Теперь попробуем получить отсутствующие через прокси на вашем домене
-        const missing = Object.keys(out).filter(k => !out[k]);
-        if (missing.length > 0) {
-            try {
-                const q = encodeURIComponent(missing.join(','));
-                const url = `${STEAM_PROXY_BASE}/api/steam/avatars?ids=${q}`;
-                const res = await fetch(url, { cache: 'no-store' });
-                if (res && res.ok) {
-                    const data = await res.json();
-                    if (data && typeof data === 'object') {
-                        Object.keys(data).forEach(k => { if (data[k]) out[k] = data[k]; });
-                    }
-                }
-            } catch (err) {
-                console.warn('Steam proxy fetch failed, falling back to bundled avatars:', err);
-            }
+        } catch (err) {
+            console.warn('Steam proxy fetch failed:', err);
         }
 
-        // Финальный фоллбэк — встроенные/заглушечные URL'ы (чтобы UI не ломался)
-        const hardcodedAvatars = {
-            '76561199508252956': '/images/avatar-default-1.png',
-            '76561199410968139': '/images/avatar-default-2.png',
-            '76561199583135417': '/images/avatar-default-3.png',
-            '76561199584531950': '/images/avatar-placeholder.png',
-            '76561199851125647': '/images/avatar-placeholder.png',
-            '76561199729749913': '/images/avatar-placeholder.png',
-            '76561199142259766': '/images/avatar-placeholder.png'
-        };
-        Object.keys(out).forEach(k => { if (!out[k] && hardcodedAvatars[k]) out[k] = hardcodedAvatars[k]; });
+        // Для отсутствующих — placeholder
+        steamIds.forEach(id => {
+            if (!out[id]) {
+                out[id] = { avatar: 'https://via.placeholder.com/48x48?text=User', name: `Player ${id.slice(-5)}` };
+            }
+        });
+
         return out;
     }
 
@@ -518,8 +498,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const sid = extractSteamId(url);
             if(sid && avatarsById[sid]){
-                img.src = avatarsById[sid];
-                nameDiv.textContent = `Player ${sid.slice(-5)}`; // Показываем последние 5 цифр SteamID
+                const entry = avatarsById[sid];
+                if (typeof entry === 'string') {
+                    img.src = entry;
+                    nameDiv.textContent = `Player ${sid.slice(-5)}`;
+                } else if (typeof entry === 'object') {
+                    img.src = entry.avatar || 'https://via.placeholder.com/48x48?text=User';
+                    nameDiv.textContent = entry.name || `Player ${sid.slice(-5)}`;
+                } else {
+                    img.src = 'https://via.placeholder.com/48x48?text=User';
+                    nameDiv.textContent = `Player ${sid.slice(-5)}`;
+                }
             } else {
                 img.src = 'https://via.placeholder.com/48x48?text=User';
                 nameDiv.textContent = `Player ${url.split('/').pop()}`; // Показываем часть URL
