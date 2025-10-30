@@ -1,0 +1,16 @@
+{
+  "name": "zone-blast-tournament",
+  "version": "1.0.0",
+  "description": "CS:GO Tournament Website - Zone Blast Autumn 2025",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 3000",
+    "dev": "npx http-server -p 3000"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  },
+  "keywords": ["csgo", "tournament", "gaming", "esports"],
+  "author": "",
+  "license": "MIT"
+}
