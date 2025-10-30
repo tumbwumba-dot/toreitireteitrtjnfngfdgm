@@ -401,9 +401,22 @@ document.addEventListener('DOMContentLoaded', function() {
             console.warn('Steam proxy fetch failed:', err);
         }
 
-        // Для отсутствующих — placeholder
+        // Hardcoded данные для известных игроков (fallback)
+        const hardcoded = {
+            '76561199508252956': { avatar: 'https://avatars.steamstatic.com/3ee8c546ec12a5c969feac1edac9807ac64aed19_full.jpg', name: '525' },
+            '76561199410968139': { avatar: 'https://avatars.steamstatic.com/750944021bca9d5fee0f6fd4e2188f85d7d30d79_full.jpg', name: 'MyagkoyPosadki' },
+            '76561199583135417': { avatar: 'https://avatars.steamstatic.com/b2ee52a62ea353bb772742aaec8c4990e4a5d412_full.jpg', name: 'sw1lows' },
+            '76561199584531950': { avatar: 'https://via.placeholder.com/48x48?text=User', name: 'Player 531950' },
+            '76561199851125647': { avatar: 'https://via.placeholder.com/48x48?text=User', name: 'Player 125647' },
+            '76561199729749913': { avatar: 'https://via.placeholder.com/48x48?text=User', name: 'Player 749913' },
+            '76561199142259766': { avatar: 'https://via.placeholder.com/48x48?text=User', name: 'Player 259766' }
+        };
+
+        // Для отсутствующих — hardcoded или placeholder
         steamIds.forEach(id => {
-            if (!out[id]) {
+            if (!out[id] && hardcoded[id]) {
+                out[id] = hardcoded[id];
+            } else if (!out[id]) {
                 out[id] = { avatar: 'https://via.placeholder.com/48x48?text=User', name: `Player ${id.slice(-5)}` };
             }
         });
