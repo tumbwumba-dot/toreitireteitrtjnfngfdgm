@@ -406,10 +406,10 @@ document.addEventListener('DOMContentLoaded', function() {
             '76561199508252956': { avatar: 'https://avatars.steamstatic.com/3ee8c546ec12a5c969feac1edac9807ac64aed19_full.jpg', name: '525' },
             '76561199410968139': { avatar: 'https://avatars.steamstatic.com/750944021bca9d5fee0f6fd4e2188f85d7d30d79_full.jpg', name: 'MyagkoyPosadki' },
             '76561199583135417': { avatar: 'https://avatars.steamstatic.com/b2ee52a62ea353bb772742aaec8c4990e4a5d412_full.jpg', name: 'sw1lows' },
-            '76561199584531950': { avatar: 'https://avatars.steamstatic.com/7e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e_full.jpg', name: 'rufat1' },
-            '76561199851125647': { avatar: 'https://avatars.steamstatic.com/8e8e8e8e8e8e8e8e8e8e8e8e8e8e8e8e8e8e8e8e_full.jpg', name: 'rufat2' },
-            '76561199729749913': { avatar: 'https://avatars.steamstatic.com/9e9e9e9e9e9e9e9e9e9e9e9e9e9e9e9e9e9e9e9e_full.jpg', name: 'rufat3' },
-            '76561199142259766': { avatar: 'https://avatars.steamstatic.com/1e1e1e1e1e1e1e1e1e1e1e1e1e1e1e1e1e1e1e1e_full.jpg', name: 'rufat4' }
+            '76561199584531950': { avatar: 'https://avatars.fastly.steamstatic.com/c01bb12da6c5edb839ea14e004b726d6f0f55987_full.jpg', name: 'MrAgusha' },
+            '76561199851125647': { avatar: 'https://avatars.fastly.steamstatic.com/05d7972dc18f8545ce204072f3b8e642f4950993_full.jpg', name: '6SURA9' },
+            '76561199729749913': { avatar: 'https://shared.fastly.steamstatic.com/community_assets/images/items/2873080/b7aa246e15b0bb0033e3566b4ed7db3861efad84.gif', name: 'qwerty' },
+            '76561199142259766': { avatar: 'https://avatars.fastly.steamstatic.com/fdfccac83248b06b3292a7f8a4bf3278e3b37772_full.jpg', name: '☠😡 ᗪυ๓α 💔🐲' }
         };
 
         // Для отсутствующих — hardcoded или placeholder
