@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             'ChocoSteep_vs_Rufat_Mirage': {
                                 left: [
                                     {name: '525', avatar: 'https://avatars.steamstatic.com/3ee8c546ec12a5c969feac1edac9807ac64aed19_full.jpg', kills: 33, deaths: 11, assists: 2, percent: 48, damage: 2969},
-                                    {name: 'LITE | MyagkoyPosadki', avatar: 'https://avatars.steamstatic.com/750944021bca9d5fee0f6fd4e2188f85d7d30d79_full.jpg', kills: 24, deaths: 10, assists: 5, percent: 33, damage: 2521},
+                                    {name: 'MyagkoyPosadki', avatar: 'https://avatars.steamstatic.com/750944021bca9d5fee0f6fd4e2188f85d7d30d79_full.jpg', kills: 24, deaths: 10, assists: 5, percent: 33, damage: 2521},
                                     {name: 'sw1lows', avatar: 'https://avatars.steamstatic.com/b2ee52a62ea353bb772742aaec8c4990e4a5d412_full.jpg', kills: 5, deaths: 15, assists: 11, percent: 20, damage: 1103}
                                 ],
                                 right: [
@@ -158,43 +158,38 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <span class="tab-title">СТАТИСТИКА МАТЧА (TAB)</span>
                                     <button class="tab-close">×</button>
                                 </div>
-                                <div class="tab-score-header">
-                                    <span>ИМЯ</span>
-                                    <span>У/С</span>
-                                    <span>П</span>
-                                    <span>%П</span>
-                                    <span>УРОН</span>
-                                </div>
                                 <div class="tab-content">
-                                    <div class="tab-team">
-                                        <div class="tab-team-title">CHOCOSTEEP</div>
+                                    <div class="tab-team tab-team-left">
+                                        <div class="tab-team-title">ChocoSteep</div>
                                         <div class="tab-players">
                                             ${tab.left.map(p => `
                                                 <div class="tab-player">
                                                     <img src="${p.avatar}" class="tab-avatar" />
                                                     <div class="tab-name">${p.name}</div>
                                                     <div class="tab-stats">
-                                                        <span>${p.kills}/${p.deaths}</span>
-                                                        <span>${p.assists}</span>
-                                                        <span>${p.percent}%</span>
-                                                        <span>${p.damage}</span>
+                                                        <span>У: ${p.kills}</span>
+                                                        <span>С: ${p.deaths}</span>
+                                                        <span>П: ${p.assists}</span>
+                                                        <span>%П: ${p.percent}</span>
+                                                        <span>УРОН: ${p.damage}</span>
                                                     </div>
                                                 </div>
                                             `).join('')}
                                         </div>
                                     </div>
-                                    <div class="tab-team">
-                                        <div class="tab-team-title">RUFAT</div>
+                                    <div class="tab-team tab-team-right">
+                                        <div class="tab-team-title">Rufat</div>
                                         <div class="tab-players">
                                             ${tab.right.map(p => `
                                                 <div class="tab-player">
                                                     <img src="${p.avatar}" class="tab-avatar" />
                                                     <div class="tab-name">${p.name}</div>
                                                     <div class="tab-stats">
-                                                        <span>${p.kills}/${p.deaths}</span>
-                                                        <span>${p.assists}</span>
-                                                        <span>${p.percent}%</span>
-                                                        <span>${p.damage}</span>
+                                                        <span>У: ${p.kills}</span>
+                                                        <span>С: ${p.deaths}</span>
+                                                        <span>П: ${p.assists}</span>
+                                                        <span>%П: ${p.percent}</span>
+                                                        <span>УРОН: ${p.damage}</span>
                                                     </div>
                                                 </div>
                                             `).join('')}
@@ -205,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                             document.body.appendChild(panel);
 
-                            // CS:GO style positioning - center on screen
+                            // Позиционирование окна
                             const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
                             const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
                             const pw = panel.offsetWidth || 800;
@@ -215,8 +210,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                             panel.style.left = left + 'px';
                             panel.style.top = top + 'px';
-                            panel.style.position = 'fixed';
-                            panel.style.zIndex = 99999;
 
                             panel.querySelector('.tab-close').onclick = closeTabPanel;
                             setTimeout(() => {
