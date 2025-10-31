@@ -128,102 +128,217 @@ document.addEventListener('DOMContentLoaded', function() {
                     maps.forEach((mapName, j) => {
                         const tr = document.createElement('tr');
                         const tdIndex = document.createElement('td');
-                        // Нумеруем раунды подряд: 1, 2, 3
-                        tdIndex.textContent = `${j+1}`;
-
-                        const tdA = document.createElement('td');
-                        tdA.textContent = m.a;
-                        tdA.classList.add('team-cell');
-                        tdA.addEventListener('click', (ev) => {
-                            ev.stopPropagation();
-                            showTeamPanel(ev, m.a);
-                        });
-
-                        const tdB = document.createElement('td');
-                        tdB.textContent = m.b;
-                        tdB.classList.add('team-cell');
-                        tdB.addEventListener('click', (ev) => {
-                            ev.stopPropagation();
-                            showTeamPanel(ev, m.b);
-                        });
-
-                        const tdScore = document.createElement('td');
-                        // проверить результат для конкретной карты (если есть results)
-                        const result = (m.results && m.results[j]) || null;
-                        if (result && result.score) {
-                            // Помещаем счёт внутрь span с градиентом, а класс победы ставим на td для семантики
-                            // Разделённый мини-блок: слева команда A + её счёт, справа команда B + её счёт
-                            const parts = (result.score || '').split('-').map(s => s.trim());
-                            const leftNum = parts[0] || '';
-                            const rightNum = parts[1] || '';
-                            const split = document.createElement('div');
-                            split.className = 'score-split';
-
-                            const left = document.createElement('div');
-                            left.className = 'ss-left';
-                            left.innerHTML = `<div class="ss-name">${m.a}</div><div class="ss-score ss-score-left">${leftNum}</div>`;
-
-                            const right = document.createElement('div');
-                            right.className = 'ss-right';
-                            right.innerHTML = `<div class="ss-name">${m.b}</div><div class="ss-score ss-score-right">${rightNum}</div>`;
-
-                            const center = document.createElement('div');
-                            center.className = 'ss-center';
-                            center.textContent = 'РЕЗУЛЬТАТЫ';
-
-                            split.appendChild(left);
-                            split.appendChild(center);
-                            split.appendChild(right);
-                            tdScore.appendChild(split);
-                            tdScore.className = result.winner === 'a' ? 'score-win' : (result.winner === 'b' ? 'score-loss' : '');
-                            // no gradient — keep score plain/white
-                            if (result.winner === 'a') {
-                                tdA.classList.add('team-win');
-                                tdB.classList.add('team-loss');
-                            } else if (result.winner === 'b') {
-                                tdB.classList.add('team-win');
-                                tdA.classList.add('team-loss');
+                        // --- TAB DATA ---
+                        const tabStats = {
+                            'ChocoSteep_vs_Rufat_Mirage': {
+                                left: [
+                                    {name: '525', avatar: 'https://avatars.steamstatic.com/3ee8c546ec12a5c969feac1edac9807ac64aed19_full.jpg', kills: 33, deaths: 11, assists: 2, percent: 48, damage: 2969},
+                                    {name: 'LITE | MyagkoyPosadki', avatar: 'https://avatars.steamstatic.com/750944021bca9d5fee0f6fd4e2188f85d7d30d79_full.jpg', kills: 24, deaths: 10, assists: 5, percent: 33, damage: 2521},
+                                    {name: 'sw1lows', avatar: 'https://avatars.steamstatic.com/b2ee52a62ea353bb772742aaec8c4990e4a5d412_full.jpg', kills: 5, deaths: 15, assists: 11, percent: 20, damage: 1103}
+                                ],
+                                right: [
+                                    {name: 'MrAgusha', avatar: 'https://avatars.fastly.steamstatic.com/c01bb12da6c5edb839ea14e004b726d6f0f55987_full.jpg', kills: 15, deaths: 15, assists: 5, percent: 33, damage: 1783},
+                                    {name: '6SURA9', avatar: 'https://avatars.fastly.steamstatic.com/05d7972dc18f8545ce204072f3b8e642f4950993_full.jpg', kills: 8, deaths: 15, assists: 4, percent: 12, damage: 983},
+                                    {name: 'qwerty_', avatar: 'https://shared.fastly.steamstatic.com/community_assets/images/items/2873080/b7aa246e15b0bb0033e3566b4ed7db3861efad84.gif', kills: 8, deaths: 19, assists: 3, percent: 50, damage: 974},
+                                    {name: 'uc0', avatar: '', kills: 5, deaths: 15, assists: 1, percent: 40, damage: 476}
+                                ]
                             }
-                        } else {
-                            tdScore.className = 'waiting';
-                            tdScore.innerHTML = `<span class="waiting-text">ожидание</span>`;
+                        };
+
+                        function showTabPanel(ev, tabKey) {
+                            closeTabPanel();
+                            const tab = tabStats[tabKey];
+                            if (!tab) return;
+                            const panel = document.createElement('div');
+                            panel.id = 'tab-panel';
+                            panel.className = 'tab-panel';
+                            panel.innerHTML = `
+                                <div class="tab-header">
+                                    <span class="tab-title">Статистика матча (TAB)</span>
+                                    <button class="tab-close">✕</button>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="tab-team tab-team-left">
+                                        <div class="tab-team-title">ChocoSteep</div>
+                                        <div class="tab-players">
+                                            ${tab.left.map(p => `
+                                                <div class="tab-player">
+                                                    <img src="${p.avatar}" class="tab-avatar" />
+                                                    <div class="tab-name">${p.name}</div>
+                                                    <div class="tab-stats">
+                                                        <span>У: ${p.kills}</span>
+                                                        <span>С: ${p.deaths}</span>
+                                                        <span>П: ${p.assists}</span>
+                                                        <span>%П: ${p.percent}</span>
+                                                        <span>УРОН: ${p.damage}</span>
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                    <div class="tab-team tab-team-right">
+                                        <div class="tab-team-title">Rufat</div>
+                                        <div class="tab-players">
+                                            ${tab.right.map(p => `
+                                                <div class="tab-player">
+                                                    <img src="${p.avatar}" class="tab-avatar" />
+                                                    <div class="tab-name">${p.name}</div>
+                                                    <div class="tab-stats">
+                                                        <span>У: ${p.kills}</span>
+                                                        <span>С: ${p.deaths}</span>
+                                                        <span>П: ${p.assists}</span>
+                                                        <span>%П: ${p.percent}</span>
+                                                        <span>УРОН: ${p.damage}</span>
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            document.body.appendChild(panel);
+                            // позиционируем возле курсора
+                            const pad = 16;
+                            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+                            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+                            const cursorX = ev.clientX || 0;
+                            const cursorY = ev.clientY || 0;
+                            const pw = 600;
+                            const ph = 320;
+                            let left = cursorX - pw - pad;
+                            let top = cursorY - Math.floor(ph/2);
+                            if (left < 8) left = 8;
+                            if (top < 8) top = 8;
+                            if (top + ph > vh - 8) top = vh - ph - 8;
+                            panel.style.left = left + 'px';
+                            panel.style.top = top + 'px';
+                            panel.style.position = 'fixed';
+                            panel.style.width = pw + 'px';
+                            panel.style.height = ph + 'px';
+                            panel.style.zIndex = 99999;
+                            panel.style.background = '#181818';
+                            panel.style.border = '2px solid #ffa500';
+                            panel.style.borderRadius = '12px';
+                            panel.style.boxShadow = '0 8px 32px rgba(0,0,0,0.7)';
+                            panel.style.color = '#fff';
+                            panel.style.fontFamily = 'Geogrotesque, Arial, sans-serif';
+                            panel.style.overflow = 'auto';
+                            panel.querySelector('.tab-close').onclick = closeTabPanel;
+                            setTimeout(()=>{
+                                document.addEventListener('click', onDocClickForTabPanel);
+                                document.addEventListener('keydown', onEscCloseTabPanel);
+                            }, 50);
                         }
+                        function closeTabPanel(){
+                            const ex = document.getElementById('tab-panel');
+                            if(ex) ex.remove();
+                            document.removeEventListener('click', onDocClickForTabPanel);
+                            document.removeEventListener('keydown', onEscCloseTabPanel);
+                        }
+                        function onDocClickForTabPanel(e){
+                            const panel = document.getElementById('tab-panel');
+                            if(!panel) return;
+                            if(!panel.contains(e.target)) closeTabPanel();
+                        }
+                        function onEscCloseTabPanel(e){ if(e.key === 'Escape') closeTabPanel(); }
 
-                        const tdMap = document.createElement('td');
-                        tdMap.textContent = mapName;
-                        tdMap.classList.add('map-cell');
-                        const mn = (mapName || '').trim().toLowerCase();
-                        if (mn === 'mirage') tdMap.classList.add('map-mirage');
-                        if (mn === 'inferno') tdMap.classList.add('map-inferno');
-                        if (mn === 'anubis') tdMap.classList.add('map-anubis');
+                        days.forEach(day => {
+                            const block = document.createElement('div');
+                            block.className = 'day-block';
 
-                        tr.appendChild(tdIndex);
-                        tr.appendChild(tdA);
-                        tr.appendChild(tdB);
-                        tr.appendChild(tdScore);
-                        tr.appendChild(tdMap);
+                            const title = document.createElement('div');
+                            title.className = 'day-title';
+                            title.textContent = day;
+                            block.appendChild(title);
 
-                        tbody.appendChild(tr);
-                    });
-                } else {
-                    const tr = document.createElement('tr');
-                    const tdIndex = document.createElement('td');
-                    tdIndex.textContent = i + 1;
+                            const matchesContainer = document.createElement('div');
+                            matchesContainer.className = 'matches-container';
 
-                    const tdA = document.createElement('td');
-                    tdA.textContent = m.a;
-                    tdA.classList.add('team-cell');
-                    tdA.addEventListener('click', (ev) => {
-                        ev.stopPropagation();
-                        showTeamPanel(ev, m.a);
-                    });
+                            const table = document.createElement('table');
+                            table.className = 'matches-table';
+                            table.innerHTML = `<thead><tr><th>МАТЧ</th><th>КОМАНДА A</th><th>КОМАНДА B</th><th>СЧЕТ</th><th>КАРТА</th></tr></thead><tbody></tbody>`;
+                            matchesContainer.appendChild(table);
+                            block.appendChild(matchesContainer);
 
-                    const tdB = document.createElement('td');
-                    tdB.textContent = m.b;
-                    tdB.classList.add('team-cell');
-                    tdB.addEventListener('click', (ev) => {
-                        ev.stopPropagation();
-                        showTeamPanel(ev, m.b);
+                            // Заполнение таблицы
+                            const tbody = table.querySelector('tbody');
+                            const matches = matchData[day] || [];
+                            matches.forEach((m, i) => {
+                                const maps = (m.map || '').split(',').map(s => s.trim()).filter(Boolean);
+                                if (maps.length > 1) {
+                                    maps.forEach((mapName, j) => {
+                                        const tr = document.createElement('tr');
+                                        const tdIndex = document.createElement('td');
+                                        tdIndex.textContent = `${j+1}`;
+
+                                        const tdA = document.createElement('td');
+                                        tdA.textContent = m.a;
+                                        tdA.classList.add('team-cell');
+                                        tdA.addEventListener('click', (ev) => {
+                                            ev.stopPropagation();
+                                            showTeamPanel(ev, m.a);
+                                        });
+
+                                        const tdB = document.createElement('td');
+                                        tdB.textContent = m.b;
+                                        tdB.classList.add('team-cell');
+                                        tdB.addEventListener('click', (ev) => {
+                                            ev.stopPropagation();
+                                            showTeamPanel(ev, m.b);
+                                        });
+
+                                        const tdScore = document.createElement('td');
+                                        const result = (m.results && m.results[j]) || null;
+                                        if (result && result.score) {
+                                            // ...existing code...
+                                            // Добавляем обработчик TAB только для первого раунда первого матча
+                                            if (day === '30 октября' && i === 0 && j === 0) {
+                                                tdScore.style.cursor = 'pointer';
+                                                tdScore.title = 'Показать TAB';
+                                                tdScore.addEventListener('click', (ev) => {
+                                                    ev.stopPropagation();
+                                                    showTabPanel(ev, 'ChocoSteep_vs_Rufat_Mirage');
+                                                });
+                                            }
+                                        } else {
+                                            tdScore.className = 'waiting';
+                                            tdScore.innerHTML = `<span class="waiting-text">ожидание</span>`;
+                                        }
+
+                                        const tdMap = document.createElement('td');
+                                        tdMap.textContent = mapName;
+                                        tdMap.classList.add('map-cell');
+                                        const mn = (mapName || '').trim().toLowerCase();
+                                        if (mn === 'mirage') tdMap.classList.add('map-mirage');
+                                        if (mn === 'inferno') tdMap.classList.add('map-inferno');
+                                        if (mn === 'anubis') tdMap.classList.add('map-anubis');
+
+                                        tr.appendChild(tdIndex);
+                                        tr.appendChild(tdA);
+                                        tr.appendChild(tdB);
+                                        tr.appendChild(tdScore);
+                                        tr.appendChild(tdMap);
+
+                                        tbody.appendChild(tr);
+                                    });
+                                } else {
+                                    // ...existing code...
+                                }
+                            });
+
+                            title.addEventListener('click', (e) => {
+                                document.querySelectorAll('.day-block').forEach(b => {
+                                    if (b !== block) b.classList.remove('active');
+                                });
+                                block.classList.toggle('active');
+                            });
+
+                            matchesContainer.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                            });
+
+                            accordion.appendChild(block);
+                        });
                     });
 
                     const tdScore = document.createElement('td');
