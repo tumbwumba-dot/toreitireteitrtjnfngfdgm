@@ -728,106 +728,198 @@ canvas {
 }
 .team-cell { cursor: pointer; }
 
-/* TAB Panel Styles */
+/* CS:GO TAB Panel Styles - Authentic CS:GO HUD style */
 .tab-panel {
-    background: linear-gradient(180deg, #121212 0%, #1b1b1b 100%);
-    border: 2px solid rgba(255,69,0,0.12);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-    border-radius: 8px;
-    padding: 0.5rem;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+    border: 2px solid #ff4500;
+    border-radius: 0;
+    padding: 0;
     color: #fff;
     font-family: 'Geogrotesque', Arial, sans-serif;
+    box-shadow: 0 0 20px rgba(255, 69, 0, 0.3);
+    min-width: 700px;
+    max-width: 900px;
+    position: relative;
+}
+
+.tab-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff4500, #ffa500, #ff4500);
 }
 
 .tab-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
+    background: linear-gradient(135deg, #2a2a2a 0%, #333 100%);
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #ff4500;
 }
 
 .tab-title {
-    font-weight: 800;
+    font-size: 1.1rem;
+    font-weight: 700;
     color: #ffa500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
 }
 
 .tab-close {
     background: transparent;
-    border: none;
-    color: #ccc;
+    border: 1px solid #ff4500;
+    color: #ffa500;
     cursor: pointer;
     font-weight: 700;
-    font-size: 1.2rem;
-    padding: 0 0.5rem;
+    font-size: 0.9rem;
+    padding: 0.2rem 0.5rem;
+    text-transform: uppercase;
+    transition: all 0.1s ease;
+}
+
+.tab-close:hover {
+    background: #ff4500;
+    color: #fff;
 }
 
 .tab-content {
     display: flex;
-    gap: 1rem;
-    padding: 0.5rem;
+    background: #0f0f0f;
+    border: 1px solid #333;
 }
 
 .tab-team {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    border-right: 1px solid #333;
+}
+
+.tab-team:last-child {
+    border-right: none;
 }
 
 .tab-team-title {
-    font-size: 0.9rem;
+    background: linear-gradient(135deg, #2a2a2a 0%, #333 100%);
     color: #ffa500;
+    font-size: 0.9rem;
     font-weight: 700;
     text-align: center;
-    padding: 0.25rem;
-    border-bottom: 1px solid rgba(255,165,0,0.3);
+    padding: 0.5rem;
+    border-bottom: 1px solid #ff4500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .tab-players {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
 }
 
 .tab-player {
     display: flex;
-    gap: 0.75rem;
     align-items: center;
-    padding: 0.25rem;
-    background: rgba(255,255,255,0.02);
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.05);
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid #222;
+    transition: background 0.1s ease;
+}
+
+.tab-player:hover {
+    background: rgba(255, 165, 0, 0.05);
+}
+
+.tab-player:last-child {
+    border-bottom: none;
 }
 
 .tab-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
     object-fit: cover;
     background: #222;
-    border: 1px solid rgba(255,255,255,0.03);
+    border: 1px solid #333;
+    margin-right: 0.5rem;
 }
 
 .tab-name {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #fff;
-    font-weight: 700;
+    font-weight: 600;
     flex: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
 
 .tab-stats {
-    font-size: 0.7rem;
-    color: #ccc;
     display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #ccc;
+    font-variant-numeric: tabular-nums;
 }
 
 .tab-stats span {
-    background: rgba(255,165,0,0.1);
-    padding: 0.1rem 0.25rem;
-    border-radius: 3px;
-    border: 1px solid rgba(255,165,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.1rem 0.3rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.tab-stats span::before {
+    content: '';
+    width: 2px;
+    height: 8px;
+    background: #ff4500;
+    border-radius: 1px;
+}
+
+/* CS:GO style score column headers */
+.tab-score-header {
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    padding: 0.25rem 0.5rem;
+    border-bottom: 1px solid #ff4500;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #ffa500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tab-score-header span {
+    flex: 1;
+    text-align: center;
+    padding: 0 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tab-panel {
+        min-width: 95vw;
+        max-width: 95vw;
+    }
+
+    .tab-content {
+        flex-direction: column;
+    }
+
+    .tab-team {
+        border-right: none;
+        border-bottom: 1px solid #333;
+    }
+
+    .tab-team:last-child {
+        border-bottom: none;
+    }
 }

@@ -149,46 +149,52 @@ document.addEventListener('DOMContentLoaded', function() {
                             closeTabPanel();
                             const tab = tabStats[tabKey];
                             if (!tab) return;
+
                             const panel = document.createElement('div');
                             panel.id = 'tab-panel';
                             panel.className = 'tab-panel';
                             panel.innerHTML = `
                                 <div class="tab-header">
-                                    <span class="tab-title">Статистика матча (TAB)</span>
-                                    <button class="tab-close">✕</button>
+                                    <span class="tab-title">СТАТИСТИКА МАТЧА (TAB)</span>
+                                    <button class="tab-close">×</button>
+                                </div>
+                                <div class="tab-score-header">
+                                    <span>ИМЯ</span>
+                                    <span>У/С</span>
+                                    <span>П</span>
+                                    <span>%П</span>
+                                    <span>УРОН</span>
                                 </div>
                                 <div class="tab-content">
-                                    <div class="tab-team tab-team-left">
-                                        <div class="tab-team-title">ChocoSteep</div>
+                                    <div class="tab-team">
+                                        <div class="tab-team-title">CHOCOSTEEP</div>
                                         <div class="tab-players">
                                             ${tab.left.map(p => `
                                                 <div class="tab-player">
                                                     <img src="${p.avatar}" class="tab-avatar" />
                                                     <div class="tab-name">${p.name}</div>
                                                     <div class="tab-stats">
-                                                        <span>У: ${p.kills}</span>
-                                                        <span>С: ${p.deaths}</span>
-                                                        <span>П: ${p.assists}</span>
-                                                        <span>%П: ${p.percent}</span>
-                                                        <span>УРОН: ${p.damage}</span>
+                                                        <span>${p.kills}/${p.deaths}</span>
+                                                        <span>${p.assists}</span>
+                                                        <span>${p.percent}%</span>
+                                                        <span>${p.damage}</span>
                                                     </div>
                                                 </div>
                                             `).join('')}
                                         </div>
                                     </div>
-                                    <div class="tab-team tab-team-right">
-                                        <div class="tab-team-title">Rufat</div>
+                                    <div class="tab-team">
+                                        <div class="tab-team-title">RUFAT</div>
                                         <div class="tab-players">
                                             ${tab.right.map(p => `
                                                 <div class="tab-player">
                                                     <img src="${p.avatar}" class="tab-avatar" />
                                                     <div class="tab-name">${p.name}</div>
                                                     <div class="tab-stats">
-                                                        <span>У: ${p.kills}</span>
-                                                        <span>С: ${p.deaths}</span>
-                                                        <span>П: ${p.assists}</span>
-                                                        <span>%П: ${p.percent}</span>
-                                                        <span>УРОН: ${p.damage}</span>
+                                                        <span>${p.kills}/${p.deaths}</span>
+                                                        <span>${p.assists}</span>
+                                                        <span>${p.percent}%</span>
+                                                        <span>${p.damage}</span>
                                                     </div>
                                                 </div>
                                             `).join('')}
@@ -196,35 +202,24 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </div>
                                 </div>
                             `;
+
                             document.body.appendChild(panel);
-                            // позиционируем возле курсора
-                            const pad = 16;
+
+                            // CS:GO style positioning - center on screen
                             const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
                             const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-                            const cursorX = ev.clientX || 0;
-                            const cursorY = ev.clientY || 0;
-                            const pw = 600;
-                            const ph = 320;
-                            let left = cursorX - pw - pad;
-                            let top = cursorY - Math.floor(ph/2);
-                            if (left < 8) left = 8;
-                            if (top < 8) top = 8;
-                            if (top + ph > vh - 8) top = vh - ph - 8;
+                            const pw = panel.offsetWidth || 800;
+                            const ph = panel.offsetHeight || 400;
+                            const left = (vw - pw) / 2;
+                            const top = (vh - ph) / 2;
+
                             panel.style.left = left + 'px';
                             panel.style.top = top + 'px';
                             panel.style.position = 'fixed';
-                            panel.style.width = pw + 'px';
-                            panel.style.height = ph + 'px';
                             panel.style.zIndex = 99999;
-                            panel.style.background = '#181818';
-                            panel.style.border = '2px solid #ffa500';
-                            panel.style.borderRadius = '12px';
-                            panel.style.boxShadow = '0 8px 32px rgba(0,0,0,0.7)';
-                            panel.style.color = '#fff';
-                            panel.style.fontFamily = 'Geogrotesque, Arial, sans-serif';
-                            panel.style.overflow = 'auto';
+
                             panel.querySelector('.tab-close').onclick = closeTabPanel;
-                            setTimeout(()=>{
+                            setTimeout(() => {
                                 document.addEventListener('click', onDocClickForTabPanel);
                                 document.addEventListener('keydown', onEscCloseTabPanel);
                             }, 50);
