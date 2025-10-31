@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         const tdScore = document.createElement('td');
                                         const result = (m.results && m.results[j]) || null;
                                         if (result && result.score) {
-                                            // ...existing code...
+                                            console.log('Processing score for multiple maps:', result.score, 'winner:', result.winner);
                                             // Добавляем обработчик TAB только для первого раунда первого матча
                                             if (day === '30 октября' && i === 0 && j === 0) {
                                                 tdScore.style.cursor = 'pointer';
@@ -300,9 +300,25 @@ document.addEventListener('DOMContentLoaded', function() {
                                                     showTabPanel(ev, 'ChocoSteep_vs_Rufat_Mirage');
                                                 });
                                             }
+                                            // Для multiple maps - применять цвета победителя
+                                            if (result.winner === 'a') {
+                                                tdA.classList.add('team-win');
+                                                tdB.classList.add('team-loss');
+                                                tdScore.textContent = result.score;
+                                                console.log('Applied win/loss colors for team A in multiple maps');
+                                            } else if (result.winner === 'b') {
+                                                tdB.classList.add('team-win');
+                                                tdA.classList.add('team-loss');
+                                                tdScore.textContent = result.score;
+                                                console.log('Applied win/loss colors for team B in multiple maps');
+                                            } else {
+                                                tdScore.textContent = result.score;
+                                                console.log('No winner specified for multiple maps');
+                                            }
                                         } else {
                                             tdScore.className = 'waiting';
                                             tdScore.innerHTML = `<span class="waiting-text">ожидание</span>`;
+                                            console.log('Score waiting for multiple maps');
                                         }
 
                                         const tdMap = document.createElement('td');
@@ -561,6 +577,12 @@ document.addEventListener('DOMContentLoaded', function() {
         try{
             closeTeamPanel();
         const profiles = teamPlayers[teamName] || [];
+        console.log('teamPanel: step 1.5 - profiles found:', profiles.length, 'for team:', teamName);
+
+        if (profiles.length === 0) {
+            console.warn('No profiles found for team:', teamName);
+            return;
+        }
 
         const panel = document.createElement('div');
         panel.id = 'team-panel';
