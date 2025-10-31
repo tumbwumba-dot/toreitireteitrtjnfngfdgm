@@ -1,3 +1,151 @@
+.tab-panel {
+    position: fixed;
+    z-index: 99999;
+    min-width: 600px;
+    max-width: 900px;
+    min-height: 340px;
+    max-height: 90vh;
+    background: linear-gradient(180deg, #181a1b 0%, #232526 100%);
+    border: 1px solid #ffb347;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 0 2px #232526;
+    border-radius: 14px;
+    color: #e8e8e8;
+    font-family: 'Geogrotesque', Arial, sans-serif;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.tab-panel .tab-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px 8px 18px;
+    background: linear-gradient(90deg, #232526 0%, #181a1b 100%);
+    border-bottom: 1px solid #ffb347;
+}
+.tab-panel .tab-title {
+    font-weight: 900;
+    color: #ffb347;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.tab-panel .tab-title .tab-map {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    object-fit: cover;
+    margin-right: 8px;
+    border: 1px solid #ffb347;
+}
+.tab-panel .tab-close {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+.tab-panel .tab-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 1rem;
+    color: #ffb347;
+    margin-bottom: 6px;
+    margin-left: 18px;
+}
+.tab-panel .tab-info .tab-score {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #fff;
+    background: linear-gradient(90deg, #ffb347 0%, #ff4500 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+.tab-panel .tab-info .tab-timer {
+    font-size: 1.1rem;
+    color: #ffb347;
+    font-weight: 700;
+}
+.tab-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0 18px 18px 18px;
+    align-items: flex-start;
+    overflow: auto;
+}
+.tab-team {
+    background: transparent;
+    border-right: 1px solid #232526;
+    padding-top: 10px;
+}
+.tab-team:last-child {
+    border-right: none;
+}
+.tab-team-title {
+    font-weight: 900;
+    color: #ffb347;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+}
+.tab-players {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.tab-player {
+    display: grid;
+    grid-template-columns: 44px 1fr 60px 40px 40px 60px;
+    align-items: center;
+    gap: 0;
+    padding: 6px 0;
+    border-bottom: 1px solid #232526;
+    font-size: 0.98rem;
+    background: transparent;
+    transition: background 120ms ease;
+}
+.tab-player:last-child { border-bottom: none; }
+.tab-player.tab-win { background: linear-gradient(90deg, #232526 60%, #ffb34722 100%); }
+.tab-player.tab-loss { background: linear-gradient(90deg, #232526 60%, #ff450022 100%); }
+.tab-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid #ffb347;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+.tab-name {
+    font-weight: 800;
+    color: #fff;
+    font-size: 0.98rem;
+    min-width: 120px;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.tab-stats {
+    display: contents;
+}
+.tab-stats span {
+    font-size: 0.98rem;
+    color: #ffb347;
+    font-weight: 700;
+    text-align: center;
+}
+@media (max-width: 900px) {
+    .tab-panel { min-width: 320px; max-width: 98vw; }
+    .tab-content { grid-template-columns: 1fr; }
+    .tab-team { border-right: none; }
+}
 /* Ссылки в блоках октября цвета даты */
 .day-block .day-title a,
 .day-block .matches-container a {

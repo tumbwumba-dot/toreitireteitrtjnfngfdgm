@@ -150,28 +150,39 @@ document.addEventListener('DOMContentLoaded', function() {
                             const tab = tabStats[tabKey];
                             if (!tab) return;
 
+                            // CS2 TAB header info
+                            const mapIcon = 'https://files.bo3.gg/uploads/image/41377/image/webp-81fe4ce1e60e951d61e41a7b7dbfe8ee.webp'; // Mirage
+                            const score = '13 : 8';
+                            const timer = '27:19';
+
                             const panel = document.createElement('div');
                             panel.id = 'tab-panel';
                             panel.className = 'tab-panel';
                             panel.innerHTML = `
                                 <div class="tab-header">
-                                    <span class="tab-title">СТАТИСТИКА МАТЧА (TAB)</span>
+                                    <span class="tab-title">
+                                        <img src="${mapIcon}" class="tab-map" /> Mirage
+                                    </span>
                                     <button class="tab-close">×</button>
+                                </div>
+                                <div class="tab-info">
+                                    <span class="tab-score">${score}</span>
+                                    <span class="tab-timer">${timer}</span>
                                 </div>
                                 <div class="tab-content">
                                     <div class="tab-team tab-team-left">
                                         <div class="tab-team-title">ChocoSteep</div>
                                         <div class="tab-players">
-                                            ${tab.left.map(p => `
-                                                <div class="tab-player">
+                                            ${tab.left.map((p, idx) => `
+                                                <div class="tab-player tab-win">
                                                     <img src="${p.avatar}" class="tab-avatar" />
                                                     <div class="tab-name">${p.name}</div>
                                                     <div class="tab-stats">
-                                                        <span>У: ${p.kills}</span>
-                                                        <span>С: ${p.deaths}</span>
-                                                        <span>П: ${p.assists}</span>
-                                                        <span>%П: ${p.percent}</span>
-                                                        <span>УРОН: ${p.damage}</span>
+                                                        <span>${p.kills}</span>
+                                                        <span>${p.deaths}</span>
+                                                        <span>${p.assists}</span>
+                                                        <span>${p.percent}%</span>
+                                                        <span>${p.damage}</span>
                                                     </div>
                                                 </div>
                                             `).join('')}
@@ -180,16 +191,16 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="tab-team tab-team-right">
                                         <div class="tab-team-title">Rufat</div>
                                         <div class="tab-players">
-                                            ${tab.right.map(p => `
-                                                <div class="tab-player">
+                                            ${tab.right.map((p, idx) => `
+                                                <div class="tab-player tab-loss">
                                                     <img src="${p.avatar}" class="tab-avatar" />
                                                     <div class="tab-name">${p.name}</div>
                                                     <div class="tab-stats">
-                                                        <span>У: ${p.kills}</span>
-                                                        <span>С: ${p.deaths}</span>
-                                                        <span>П: ${p.assists}</span>
-                                                        <span>%П: ${p.percent}</span>
-                                                        <span>УРОН: ${p.damage}</span>
+                                                        <span>${p.kills}</span>
+                                                        <span>${p.deaths}</span>
+                                                        <span>${p.assists}</span>
+                                                        <span>${p.percent}%</span>
+                                                        <span>${p.damage}</span>
                                                     </div>
                                                 </div>
                                             `).join('')}
