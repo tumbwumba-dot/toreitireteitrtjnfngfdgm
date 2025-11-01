@@ -16,8 +16,8 @@ app.use(cors({
 const STEAM_API_KEY = 'CE086EF60D5CD176EB9AD765340483B0';
 
 passport.use(new SteamStrategy({
-    returnURL: 'http://localhost:3000/auth/steam/return',
-    realm: 'http://localhost:3000/',
+    returnURL: 'https://zoneblast.netlify.app/auth/steam/return',
+    realm: 'https://zoneblast.netlify.app/',
     apiKey: STEAM_API_KEY
   },
   function(identifier, profile, done) {
@@ -54,8 +54,7 @@ app.get('/auth/steam/return',
   function(req, res) {
     // Перенаправляем обратно на фронтенд с данными пользователя
     const userData = encodeURIComponent(JSON.stringify(req.user));
-    const filePath = 'file:///C:/Users/neruk/OneDrive/Desktop/tour/index.html';
-    res.redirect(`${filePath}?steamAuth=success&user=${userData}`);
+    res.redirect(`https://zoneblast.netlify.app/?steamAuth=success&user=${userData}`);
   }
 );
 
@@ -71,7 +70,7 @@ app.get('/auth/status', (req, res) => {
 // Выход
 app.get('/auth/logout', (req, res) => {
     req.logout(() => {
-        res.redirect('file:///C:/Users/neruk/OneDrive/Desktop/tour/index.html');
+        res.redirect('https://zoneblast.netlify.app/');
     });
 });
 

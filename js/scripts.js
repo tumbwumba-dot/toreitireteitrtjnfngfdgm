@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     discordLoginBtn.addEventListener('click', () => {
         new Audio('sounds/inventory_new_item_accept_01.wav').play().catch(e => {});
         const clientId = '1434129915502133249';
-        const redirectUri = encodeURIComponent('http://127.0.0.1:5500/index.html');
+        const redirectUri = encodeURIComponent('https://zoneblast.netlify.app/');
         const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
         const popup = window.open(authUrl, 'Discord Auth', 'width=500,height=700,left=100,top=100');
         const checkClosed = setInterval(() => {
