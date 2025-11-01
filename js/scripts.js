@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     const checkAuth = () => {
-        const discordUser = sessionStorage.getItem('discord_user');
+        const discordUser = localStorage.getItem('discord_user');
         if(discordUser) {
             const user = JSON.parse(discordUser);
             currentUserId = user.id;
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     discordLogoutBtn.addEventListener('click', () => {
         new Audio('sounds/sidemenu_click_01.wav').play().catch(e => {});
-        sessionStorage.removeItem('discord_user');
+        localStorage.removeItem('discord_user');
         currentUserId = null;
         document.getElementById('discord-not-connected').style.display = 'block';
         document.getElementById('discord-connected').style.display = 'none';
@@ -146,9 +146,9 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(r => r.json())
         .then(user => {
-            sessionStorage.setItem('discord_user', JSON.stringify(user));
+            localStorage.setItem('discord_user', JSON.stringify(user));
             if(window.opener) {
-                window.opener.sessionStorage.setItem('discord_user', JSON.stringify(user));
+                window.opener.localStorage.setItem('discord_user', JSON.stringify(user));
                 window.close();
             } else {
                 window.location.hash = '';
@@ -691,7 +691,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const allPlayers = [...mockLeaderboard];
         if(currentUserId) {
-            const discordUserData = sessionStorage.getItem('discord_user');
+            const discordUserData = localStorage.getItem('discord_user');
             if(discordUserData) {
                 const discordUser = JSON.parse(discordUserData);
                 allPlayers.push({username: discordUser.username, level: bpData.level, xp: bpData.level * 1000 + bpData.xp});
@@ -703,7 +703,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return b.xp - a.xp;
         });
         
-        const currentUsername = currentUserId && sessionStorage.getItem('discord_user') ? JSON.parse(sessionStorage.getItem('discord_user')).username : null;
+        const currentUsername = currentUserId && localStorage.getItem('discord_user') ? JSON.parse(localStorage.getItem('discord_user')).username : null;
         tbody.innerHTML = allPlayers.map((p, i) => `
             <tr style="${currentUsername && p.username === currentUsername ? 'background:rgba(88,101,242,0.1);' : ''}">
                 <td>${i + 1}</td>
