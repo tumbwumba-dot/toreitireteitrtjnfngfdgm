@@ -3,111 +3,704 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zone Blast Autumn 2025 - CS:GO Tournament</title>
+    <title>Zone Blast Autumn 2025 - Counter-Strike 2 Tournament</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/daily-case.css">
+    <link rel="stylesheet" href="css/snow.css">
+    <link rel="stylesheet" href="css/steam-auth.css">
+    <link rel="stylesheet" href="css/tournament.css">
 </head>
-<body class="scanlines">
-    <header class="hud-border">
-        <h1>ZONE BLAST</h1>
-        <h2>AUTUMN 2025</h2>
-        <p>COUNTER-STRIKE 2 TOURNAMENT</p>
-        <div class="tournament-leader">
-            <h3>ЛИДЕР ТУРНИРА</h3>
-            <div class="leader-team">Chebyrechnie Bratya</div>
-            <div class="leader-stats">ОЧКИ: 8 | ПОБЕДЫ: 3</div>
+<body>
+    <div id="snowfall"></div>
+    <nav id="main-nav">
+        <div class="nav-container">
+            <div class="nav-buttons">
+                <button class="nav-btn" data-page="inventory">ИНВЕНТАРЬ</button>
+                <button class="nav-btn" data-page="battlepass">BATTLE PASS</button>
+                <button class="nav-btn active" data-page="main">ГЛАВНАЯ</button>
+                <button class="nav-btn" data-page="seasons">СЕЗОНЫ</button>
+                <button class="nav-btn" data-page="settings">НАСТРОЙКИ</button>
+            </div>
         </div>
-    </header>
+    </nav>
+    
+    <div id="page-container">
+        <!-- MAIN PAGE -->
+        <div class="page active" id="page-main">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">ZONE BLAST</h1>
+                    <h2 class="hero-subtitle">WINTER 2026</h2>
+                    <p class="hero-description">COUNTER-STRIKE 2 TOURNAMENT</p>
+                </div>
+            </div>
 
-    <section id="teams">
-        <h2>КОМАНДЫ</h2>
-        <div class="results-title">ТУРНИРНАЯ ТАБЛИЦА</div>
-        <div class="team-card">
-            <table class="players-table" style="margin-bottom:2rem;">
-                <thead>
-                    <tr>
-                        <th>№</th>
-                        <th>Название команды</th>
-                        <th>Очки</th>
-                        <th>Победы</th>
-                        <th>Поражения</th>
-                        <th>Выигранные раунды</th>
-                        <th>Игры</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1.</td>
-                        <td>Chebyrechnie Bratya</td>
-                        <td>6</td>
-                        <td>2</td>
-                        <td>1</td>
-                        <td>65</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>2.</td>
-                        <td>ChocoSteep</td>
-                        <td>6</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>62</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>3.</td>
-                        <td>SamuraiZ</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>62</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>4.</td>
-                        <td>PizdoLizu</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>49</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>5.</td>
-                        <td>Rufat</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>3</td>
-                        <td>35</td>
-                        <td>3</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="page-content">
+                <section id="tournament-schedule">
+                    <h2 class="section-title">РАСПИСАНИЕ МАТЧЕЙ</h2>
+                    <div class="bracket-container">
+                        <div class="bracket-round">
+                            <div class="bracket-title">
+                                ДЕНЬ 1
+                                <div class="bracket-day-tooltip">
+                                    <div class="bracket-tooltip-header">ДЕНЬ 1</div>
+                                    <div class="bracket-tooltip-info">
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Дата:</span>
+                                            <span class="bracket-tooltip-value">15 января 2026</span>
+                                        </div>
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Время:</span>
+                                            <span class="bracket-tooltip-value">18:00</span>
+                                        </div>
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Формат:</span>
+                                            <span class="bracket-tooltip-value">BO3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bracket-match">
+                                <div class="bracket-team">Chebyrechnie Bratya</div>
+                                <div class="bracket-score">vs</div>
+                                <div class="bracket-team">ChocoSteep</div>
+                                <div class="bracket-match-tooltip">
+                                    <div class="bracket-tooltip-header">ИНФОРМАЦИЯ О МАТЧЕ</div>
+                                    <div class="bracket-tooltip-teams">
+                                        <div class="bracket-tooltip-team">
+                                            <div class="bracket-tooltip-team-name">Chebyrechnie Bratya</div>
+                                            <div class="bracket-tooltip-players">
+                                                <div>• Player1</div>
+                                                <div>• Player2</div>
+                                                <div>• Player3</div>
+                                                <div>• Player4</div>
+                                                <div>• Player5</div>
+                                            </div>
+                                        </div>
+                                        <div class="bracket-tooltip-team">
+                                            <div class="bracket-tooltip-team-name">ChocoSteep</div>
+                                            <div class="bracket-tooltip-players">
+                                                <div>• Player1</div>
+                                                <div>• Player2</div>
+                                                <div>• Player3</div>
+                                                <div>• Player4</div>
+                                                <div>• Player5</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bracket-tooltip-info">
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Карты:</span>
+                                            <span class="bracket-tooltip-value">de_mirage, de_dust2, de_inferno</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bracket-round">
+                            <div class="bracket-title">
+                                ДЕНЬ 2
+                                <div class="bracket-day-tooltip">
+                                    <div class="bracket-tooltip-header">ДЕНЬ 2</div>
+                                    <div class="bracket-tooltip-info">
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Дата:</span>
+                                            <span class="bracket-tooltip-value">16 января 2026</span>
+                                        </div>
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Время:</span>
+                                            <span class="bracket-tooltip-value">18:00</span>
+                                        </div>
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Формат:</span>
+                                            <span class="bracket-tooltip-value">BO3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bracket-match">
+                                <div class="bracket-team">SamuraiZ</div>
+                                <div class="bracket-score">vs</div>
+                                <div class="bracket-team">PizdoLizu</div>
+                                <div class="bracket-match-tooltip">
+                                    <div class="bracket-tooltip-header">ИНФОРМАЦИЯ О МАТЧЕ</div>
+                                    <div class="bracket-tooltip-teams">
+                                        <div class="bracket-tooltip-team">
+                                            <div class="bracket-tooltip-team-name">SamuraiZ</div>
+                                            <div class="bracket-tooltip-players">
+                                                <div>• Player1</div>
+                                                <div>• Player2</div>
+                                                <div>• Player3</div>
+                                                <div>• Player4</div>
+                                                <div>• Player5</div>
+                                            </div>
+                                        </div>
+                                        <div class="bracket-tooltip-team">
+                                            <div class="bracket-tooltip-team-name">PizdoLizu</div>
+                                            <div class="bracket-tooltip-players">
+                                                <div>• Player1</div>
+                                                <div>• Player2</div>
+                                                <div>• Player3</div>
+                                                <div>• Player4</div>
+                                                <div>• Player5</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bracket-tooltip-info">
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Карты:</span>
+                                            <span class="bracket-tooltip-value">de_ancient, de_nuke, de_overpass</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bracket-round">
+                            <div class="bracket-title">
+                                ДЕНЬ 3
+                                <div class="bracket-day-tooltip">
+                                    <div class="bracket-tooltip-header">ДЕНЬ 3</div>
+                                    <div class="bracket-tooltip-info">
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Дата:</span>
+                                            <span class="bracket-tooltip-value">17 января 2026</span>
+                                        </div>
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Время:</span>
+                                            <span class="bracket-tooltip-value">18:00</span>
+                                        </div>
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Формат:</span>
+                                            <span class="bracket-tooltip-value">BO3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bracket-match">
+                                <div class="bracket-team">Rufat</div>
+                                <div class="bracket-score">vs</div>
+                                <div class="bracket-team">Chebyrechnie Bratya</div>
+                                <div class="bracket-match-tooltip">
+                                    <div class="bracket-tooltip-header">ИНФОРМАЦИЯ О МАТЧЕ</div>
+                                    <div class="bracket-tooltip-teams">
+                                        <div class="bracket-tooltip-team">
+                                            <div class="bracket-tooltip-team-name">Rufat</div>
+                                            <div class="bracket-tooltip-players">
+                                                <div>• Player1</div>
+                                                <div>• Player2</div>
+                                                <div>• Player3</div>
+                                                <div>• Player4</div>
+                                                <div>• Player5</div>
+                                            </div>
+                                        </div>
+                                        <div class="bracket-tooltip-team">
+                                            <div class="bracket-tooltip-team-name">Chebyrechnie Bratya</div>
+                                            <div class="bracket-tooltip-players">
+                                                <div>• Player1</div>
+                                                <div>• Player2</div>
+                                                <div>• Player3</div>
+                                                <div>• Player4</div>
+                                                <div>• Player5</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bracket-tooltip-info">
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Карты:</span>
+                                            <span class="bracket-tooltip-value">de_vertigo, de_anubis, de_mirage</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bracket-round">
+                            <div class="bracket-title">
+                                ДЕНЬ 4
+                                <div class="bracket-day-tooltip">
+                                    <div class="bracket-tooltip-header">ДЕНЬ 4</div>
+                                    <div class="bracket-tooltip-info">
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Дата:</span>
+                                            <span class="bracket-tooltip-value">18 января 2026</span>
+                                        </div>
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Время:</span>
+                                            <span class="bracket-tooltip-value">18:00</span>
+                                        </div>
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Формат:</span>
+                                            <span class="bracket-tooltip-value">BO3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bracket-match">
+                                <div class="bracket-team">ChocoSteep</div>
+                                <div class="bracket-score">vs</div>
+                                <div class="bracket-team">SamuraiZ</div>
+                                <div class="bracket-match-tooltip">
+                                    <div class="bracket-tooltip-header">ИНФОРМАЦИЯ О МАТЧЕ</div>
+                                    <div class="bracket-tooltip-teams">
+                                        <div class="bracket-tooltip-team">
+                                            <div class="bracket-tooltip-team-name">ChocoSteep</div>
+                                            <div class="bracket-tooltip-players">
+                                                <div>• Player1</div>
+                                                <div>• Player2</div>
+                                                <div>• Player3</div>
+                                                <div>• Player4</div>
+                                                <div>• Player5</div>
+                                            </div>
+                                        </div>
+                                        <div class="bracket-tooltip-team">
+                                            <div class="bracket-tooltip-team-name">SamuraiZ</div>
+                                            <div class="bracket-tooltip-players">
+                                                <div>• Player1</div>
+                                                <div>• Player2</div>
+                                                <div>• Player3</div>
+                                                <div>• Player4</div>
+                                                <div>• Player5</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bracket-tooltip-info">
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Карты:</span>
+                                            <span class="bracket-tooltip-value">de_dust2, de_inferno, de_ancient</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bracket-round">
+                            <div class="bracket-title">
+                                ДЕНЬ 5
+                                <div class="bracket-day-tooltip">
+                                    <div class="bracket-tooltip-header">ДЕНЬ 5</div>
+                                    <div class="bracket-tooltip-info">
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Дата:</span>
+                                            <span class="bracket-tooltip-value">19 января 2026</span>
+                                        </div>
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Время:</span>
+                                            <span class="bracket-tooltip-value">18:00</span>
+                                        </div>
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Формат:</span>
+                                            <span class="bracket-tooltip-value">BO3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bracket-match">
+                                <div class="bracket-team">PizdoLizu</div>
+                                <div class="bracket-score">vs</div>
+                                <div class="bracket-team">Rufat</div>
+                                <div class="bracket-match-tooltip">
+                                    <div class="bracket-tooltip-header">ИНФОРМАЦИЯ О МАТЧЕ</div>
+                                    <div class="bracket-tooltip-teams">
+                                        <div class="bracket-tooltip-team">
+                                            <div class="bracket-tooltip-team-name">PizdoLizu</div>
+                                            <div class="bracket-tooltip-players">
+                                                <div>• Player1</div>
+                                                <div>• Player2</div>
+                                                <div>• Player3</div>
+                                                <div>• Player4</div>
+                                                <div>• Player5</div>
+                                            </div>
+                                        </div>
+                                        <div class="bracket-tooltip-team">
+                                            <div class="bracket-tooltip-team-name">Rufat</div>
+                                            <div class="bracket-tooltip-players">
+                                                <div>• Player1</div>
+                                                <div>• Player2</div>
+                                                <div>• Player3</div>
+                                                <div>• Player4</div>
+                                                <div>• Player5</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bracket-tooltip-info">
+                                        <div class="bracket-tooltip-item">
+                                            <span class="bracket-tooltip-label">Карты:</span>
+                                            <span class="bracket-tooltip-value">de_nuke, de_overpass, de_vertigo</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="leaderboard">
+                    <h2 class="section-title">ТУРНИРНАЯ ТАБЛИЦА</h2>
+                    <div class="table-container">
+                        <table class="players-table">
+                            <thead>
+                                <tr>
+                                    <th>МЕСТО</th>
+                                    <th>КОМАНДА</th>
+                                    <th>ИГРЫ</th>
+                                    <th>ПОБЕДЫ</th>
+                                    <th>ПОРАЖЕНИЯ</th>
+                                    <th>ОЧКИ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Chebyrechnie Bratya</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>ChocoSteep</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>SamuraiZ</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>PizdoLizu</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Rufat</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+                <section id="upcoming-matches">
+                    <h2 class="section-title">БЛИЖАЙШИЕ МАТЧИ</h2>
+                    <div class="matches-grid">
+                        <div class="match-card">
+                            <div class="match-time">СКОРО</div>
+                            <div class="match-teams">
+                                <div class="match-team">Chebyrechnie Bratya</div>
+                                <div class="match-vs">VS</div>
+                                <div class="match-team">ChocoSteep</div>
+                            </div>
+                            <div class="match-map">de_mirage</div>
+                            <div class="match-status">ПОЛУФИНАЛ</div>
+                        </div>
+                        <div class="match-card">
+                            <div class="match-time">СКОРО</div>
+                            <div class="match-teams">
+                                <div class="match-team">SamuraiZ</div>
+                                <div class="match-vs">VS</div>
+                                <div class="match-team">PizdoLizu</div>
+                            </div>
+                            <div class="match-map">de_dust2</div>
+                            <div class="match-status">ПОЛУФИНАЛ</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
-    </section>
 
-    <section id="analytics">
-        <h2>АНАЛИТИКА</h2>
-        <div class="stats">
-            <div class="results-title">РЕЗУЛЬТАТЫ МАТЧЕЙ</div>
-            <div class="team-card">
-                <!-- Day selector: initially visible. Table appears after a day is selected -->
-                <div class="days-accordion" aria-label="Выбор дня">
-                    <!-- day blocks generated by JS -->
+        <!-- BATTLE PASS PAGE -->
+        <div class="page" id="page-battlepass">
+            <div class="page-content">
+                <div class="bp-header">
+                    <button class="bp-quest-btn" id="bp-refresh-btn" style="display:none;position:absolute;top:2rem;left:2rem;">
+                        <img src="https://img.icons8.com/?size=100&id=11253&format=png&color=a0d0ff" alt="Refresh" class="quest-icon">
+                        <div class="bp-reward-tooltip" id="refresh-tooltip" style="display:none;opacity:0;visibility:hidden;">
+                            <div class="bp-tooltip-header">
+                                <div class="bp-tooltip-class">Действие</div>
+                                <div class="bp-tooltip-name">Обновить квесты</div>
+                            </div>
+                            <div class="bp-tooltip-description">Перезагрузить прогресс квестовых заданий</div>
+                        </div>
+                    </button>
+                    <button class="bp-quest-btn" id="bp-quest-btn" style="display:none;">
+                        <img src="https://img.icons8.com/?size=100&id=11765&format=png&color=a0d0ff" alt="Quests" class="quest-icon" id="quest-icon">
+                        <div class="bp-reward-tooltip" id="quest-tooltip">
+                            <div class="bp-tooltip-header">
+                                <div class="bp-tooltip-class">Навигация</div>
+                                <div class="bp-tooltip-name" id="quest-tooltip-text">Открыть квесты</div>
+                            </div>
+                            <div class="bp-tooltip-description" id="quest-tooltip-desc">Просмотреть доступные квестовые задания</div>
+                        </div>
+                    </button>
+                    <div class="bp-title">ZONE BLAST WINTER 2026</div>
+                    <div class="bp-level" id="bp-level-container" style="display:none;">
+                        <div class="bp-level-text">УРОВЕНЬ <span id="bp-current-level">1</span></div>
+                        <div class="bp-xp">
+                            <div class="bp-xp-bar">
+                                <div class="bp-xp-fill" id="bp-xp-fill"></div>
+                            </div>
+                            <div class="bp-xp-text"><span id="bp-current-xp">0</span> / <span id="bp-max-xp">1000</span> XP</div>
+                        </div>
+                        <button id="test-level-up" style="font-family:'Geogrotesque',Arial,sans-serif;background:linear-gradient(135deg, #ffb347 0%, #ff8c00 100%);border:2px solid #ffb347;padding:8px 20px;font-size:0.85rem;font-weight:700;color:#000;border-radius:4px;cursor:pointer;transition:all 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.3);text-transform:uppercase;letter-spacing:1px;margin-top:1rem;">+1 УРОВЕНЬ (ТЕСТ)</button>
+                    </div>
+                    <div id="bp-start-container" style="text-align:center;margin-top:1rem;">
+                        <div style="font-size:1.2rem;color:#a0d0ff;margin-bottom:1rem;">Начните свое путешествие</div>
+                        <button id="start-battlepass" style="font-family:'Geogrotesque',Arial,sans-serif;background:linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);border:2px solid #4a90e2;padding:12px 30px;font-size:1rem;font-weight:900;color:#fff;border-radius:4px;cursor:pointer;transition:all 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);text-transform:uppercase;letter-spacing:1px;position:relative;overflow:hidden;">НАЧАТЬ ПРОПУСК</button>
+                    </div>
+                </div>
+                <div class="bp-rewards" id="bp-rewards" style="display:none;">
+                    <div class="bp-reward" data-level="1" data-reward-type="music-kit" data-music-file="sounds/SpotiDownloader.com - Last Christmas - Wham!.mp3">
+                        <div class="bp-reward-level">1</div>
+                        <div class="bp-reward-item unlocked">
+                            <img src="https://i.scdn.co/image/ab67616d0000b273f2d2adaa21ad616df6241e7d" class="bp-reward-image" alt="Last Christmas">
+                            <div class="bp-reward-name"><span>Wham! - Last Christmas</span></div>
+                            <div class="bp-reward-tooltip">
+                                <div class="bp-tooltip-header">
+                                    <div class="bp-tooltip-class">Музыкальный набор</div>
+                                    <div class="bp-tooltip-name">Wham! - Last Christmas</div>
+                                </div>
+                                <div class="bp-tooltip-description">Праздничная рождественская композиция. Награда за достижение 1 уровня Battle Pass.</div>
+                                <div class="bp-tooltip-status unlocked" style="color:#4b69ff;border-color:rgba(75,105,255,0.3);background:rgba(75,105,255,0.1);">РЕДКИЙ</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bp-reward" data-level="2" data-reward-type="music-kit" data-music-file="sounds/SpotiDownloader.com - Первый раз - remix nevroz - JojoHF.mp3">
+                        <div class="bp-reward-level">2</div>
+                        <div class="bp-reward-item locked">
+                            <img src="https://i.scdn.co/image/ab67616d0000b273892b0c0ce05197fb06b7294e" class="bp-reward-image" alt="Первый раз">
+                            <div class="bp-reward-name"><span>Первый раз - remix</span></div>
+                            <div class="bp-reward-tooltip">
+                                <div class="bp-tooltip-header">
+                                    <div class="bp-tooltip-class">Музыкальный набор</div>
+                                    <div class="bp-tooltip-name">Первый раз - remix</div>
+                                </div>
+                                <div class="bp-tooltip-description">Ремикс популярной композиции. Награда за достижение 2 уровня Battle Pass.</div>
+                                <div class="bp-tooltip-status locked" style="color:#d32ce6;border-color:rgba(211,44,230,0.3);background:rgba(211,44,230,0.1);">ЛЕГЕНДАРНЫЙ</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bp-reward" data-level="3">
+                        <div class="bp-reward-level">3</div>
+                        <div class="bp-reward-item locked">
+                            <div class="bp-reward-icon">🔫</div>
+                            <div class="bp-reward-name">Weapon Skin</div>
+                        </div>
+                    </div>
+                    <div class="bp-reward" data-level="4">
+                        <div class="bp-reward-level">4</div>
+                        <div class="bp-reward-item locked">
+                            <div class="bp-reward-icon">🎵</div>
+                            <div class="bp-reward-name">Music Kit</div>
+                        </div>
+                    </div>
+                    <div class="bp-reward" data-level="5">
+                        <div class="bp-reward-level">5</div>
+                        <div class="bp-reward-item locked">
+                            <div class="bp-reward-icon">⭐</div>
+                            <div class="bp-reward-name">Premium Item</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="graphs">
-            <div class="graph-card">
-                <h3>СТАТИСТИКА K/D</h3>
-                <canvas id="kdChart" width="400" height="200"></canvas>
-            </div>
-            <div class="graph-card">
-                <h3>ПРОИЗВОДИТЕЛЬНОСТЬ ADR</h3>
-                <canvas id="adrChart" width="400" height="200"></canvas>
+
+        <!-- SEASONS PAGE -->
+        <div class="page" id="page-seasons">
+            <div class="page-content">
+                <div class="seasons-grid">
+                    <div class="season-card winter active">
+                        <div class="season-icon">❄️</div>
+                        <div class="season-name">WINTER 2026</div>
+                        <div class="season-status">ТЕКУЩИЙ СЕЗОН</div>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
 
+        <!-- INVENTORY PAGE -->
+        <div class="page" id="page-inventory">
+            <div class="page-content">
+                <div class="collection-title">COUNTER-STRIKE</div>
+                <div class="inventory-grid">
+                    <div class="inventory-item music-kit" data-music="csgo">
+                        <div class="item-box">
+                            <img src="images/valve_01_png.png" alt="CS:GO Music Kit" class="item-image">
+                        </div>
+                        <div class="item-info">
+                            <div class="item-rarity rarity-rare">Музыкальный набор</div>
+                            <div class="item-name">Valve - CS:GO</div>
+                        </div>
+                        <div class="item-tooltip">
+                            <div class="tooltip-header">
+                                <div class="tooltip-class">Музыкальный набор</div>
+                                <div class="tooltip-name">Valve - CS:GO</div>
+                            </div>
+                            <div class="tooltip-description">
+                                Классическая музыкальная тема из Counter-Strike: Global Offensive. Легендарный саундтрек, который сопровождал миллионы матчей.
+                            </div>
+                            <div class="tooltip-details">
+                                <div class="tooltip-detail-item">
+                                    <span class="tooltip-detail-label">Коллекция:</span>
+                                    <span class="tooltip-detail-value">Counter-Strike</span>
+                                </div>
+                                <div class="tooltip-detail-item">
+                                    <span class="tooltip-detail-label">Редкость:</span>
+                                    <span class="tooltip-detail-value rarity-rare">Редкий</span>
+                                </div>
+                            </div>
+                            <div class="tooltip-status not-equipped">НЕ ЭКИПИРОВАН</div>
+                            <div class="tooltip-action">Нажмите для действий</div>
+                        </div>
+                    </div>
+                    <div class="inventory-item music-kit" data-music="perviyraz" style="display: none;">
+                        <div class="item-box">
+                            <img src="https://i.scdn.co/image/ab67616d0000b273892b0c0ce05197fb06b7294e" alt="Первый раз" class="item-image" style="max-height: 80px;">
+                        </div>
+                        <div class="item-info">
+                            <div class="item-rarity" style="color:#d32ce6;">Музыкальный набор</div>
+                            <div class="item-name">Первый раз - remix</div>
+                        </div>
+                        <div class="item-tooltip">
+                            <div class="tooltip-header">
+                                <div class="tooltip-class">Музыкальный набор</div>
+                                <div class="tooltip-name">Первый раз - remix</div>
+                            </div>
+                            <div class="tooltip-description">
+                                Ремикс популярной композиции. Награда за Battle Pass.
+                            </div>
+                            <div class="tooltip-details">
+                                <div class="tooltip-detail-item">
+                                    <span class="tooltip-detail-label">Коллекция:</span>
+                                    <span class="tooltip-detail-value">Winter 2026</span>
+                                </div>
+                                <div class="tooltip-detail-item">
+                                    <span class="tooltip-detail-label">Редкость:</span>
+                                    <span class="tooltip-detail-value" style="color:#d32ce6;">Легендарный</span>
+                                </div>
+                            </div>
+                            <div class="tooltip-status not-equipped">НЕ ЭКИПИРОВАН</div>
+                            <div class="tooltip-action">Нажмите для действий</div>
+                        </div>
+                    </div>
+                    <div class="inventory-item music-kit" data-music="lastchristmas" style="display: none;">
+                        <div class="item-box">
+                            <img src="https://i.scdn.co/image/ab67616d0000b273f2d2adaa21ad616df6241e7d" alt="Last Christmas" class="item-image" style="max-height: 80px;">
+                        </div>
+                        <div class="item-info">
+                            <div class="item-rarity rarity-rare">Музыкальный набор</div>
+                            <div class="item-name">Wham! - Last Christmas</div>
+                        </div>
+                        <div class="item-tooltip">
+                            <div class="tooltip-header">
+                                <div class="tooltip-class">Музыкальный набор</div>
+                                <div class="tooltip-name">Wham! - Last Christmas</div>
+                            </div>
+                            <div class="tooltip-description">
+                                Праздничная рождественская композиция. Награда за Battle Pass.
+                            </div>
+                            <div class="tooltip-details">
+                                <div class="tooltip-detail-item">
+                                    <span class="tooltip-detail-label">Коллекция:</span>
+                                    <span class="tooltip-detail-value">Winter 2026</span>
+                                </div>
+                                <div class="tooltip-detail-item">
+                                    <span class="tooltip-detail-label">Редкость:</span>
+                                    <span class="tooltip-detail-value rarity-rare">Редкий</span>
+                                </div>
+                            </div>
+                            <div class="tooltip-status not-equipped">НЕ ЭКИПИРОВАН</div>
+                            <div class="tooltip-action">Нажмите для действий</div>
+                        </div>
+                    </div>
+                    <div class="inventory-item music-kit active" data-music="cs2">
+                        <div class="item-box">
+                            <img src="images/valve_cs2_01_png.png" alt="CS2 Music Kit" class="item-image">
+                        </div>
+                        <div class="item-info">
+                            <div class="item-rarity rarity-standard">Музыкальный набор</div>
+                            <div class="item-name">Valve - Counter-Strike 2</div>
+                        </div>
+                        <div class="item-tooltip">
+                            <div class="tooltip-header">
+                                <div class="tooltip-class">Музыкальный набор</div>
+                                <div class="tooltip-name">Valve - Counter-Strike 2</div>
+                            </div>
+                            <div class="tooltip-description">
+                                Новая музыкальная тема из Counter-Strike 2. Современный звук для нового поколения игроков.
+                            </div>
+                            <div class="tooltip-details">
+                                <div class="tooltip-detail-item">
+                                    <span class="tooltip-detail-label">Коллекция:</span>
+                                    <span class="tooltip-detail-value">Counter-Strike</span>
+                                </div>
+                                <div class="tooltip-detail-item">
+                                    <span class="tooltip-detail-label">Редкость:</span>
+                                    <span class="tooltip-detail-value rarity-standard">Стандартный</span>
+                                </div>
+                            </div>
+                            <div class="tooltip-status equipped">ЭКИПИРОВАН</div>
+                            <div class="tooltip-action">Нажмите для действий</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS PAGE -->
+        <div class="page" id="page-settings">
+            <div class="page-content">
+                <div class="settings-container">
+                    <div class="settings-item" id="discord-auth-section" style="background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(88,101,242,0.03) 2px,rgba(88,101,242,0.03) 4px),repeating-linear-gradient(90deg,transparent,transparent 2px,rgba(88,101,242,0.03) 2px,rgba(88,101,242,0.03) 4px),rgba(20,20,20,0.6);border:2px solid rgba(88,101,242,0.2);">
+                        <label class="settings-label" style="color:#5865F2;display:flex;align-items:center;gap:0.5rem;margin-bottom:1.5rem;"><img src="https://img.icons8.com/?size=100&id=Q524h6svpboS&format=png&color=5865F2" style="width:20px;height:20px;">АВТОРИЗАЦИЯ DISCORD</label>
+                        <div id="discord-not-connected" style="display:block;text-align:center;padding:2rem 0;">
+                            <div style="width:80px;height:80px;margin:0 auto 1.5rem;background:rgba(88,101,242,0.1);border:3px solid rgba(88,101,242,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                                <img src="https://img.icons8.com/?size=100&id=Q524h6svpboS&format=png&color=5865F2" style="width:40px;height:40px;">
+                            </div>
+                            <p style="color:#aaa;margin-bottom:2rem;font-size:0.95rem;line-height:1.6;">Подключите Discord для отслеживания<br>прогресса и выполнения квестов</p>
+                            <button id="discord-login-btn" style="background:linear-gradient(135deg,#5865F2 0%,#7289DA 100%);border:none;color:#fff;padding:1rem 2.5rem;font-size:0.95rem;font-weight:700;text-transform:uppercase;cursor:pointer;border-radius:4px;font-family:'Geogrotesque',sans-serif;letter-spacing:0.08em;transition:all 0.3s ease;display:inline-flex;align-items:center;gap:0.75rem;box-shadow:0 4px 15px rgba(88,101,242,0.3);"><img src="https://img.icons8.com/?size=100&id=Q524h6svpboS&format=png&color=FFFFFF" style="width:24px;height:24px;">ВОЙТИ ЧЕРЕЗ DISCORD</button>
+                        </div>
+                        <div id="discord-connected" style="display:none;">
+                            <div style="background:rgba(88,101,242,0.05);border:2px solid rgba(88,101,242,0.2);border-radius:8px;padding:1.5rem;margin-bottom:1.5rem;">
+                                <div style="display:flex;align-items:center;gap:1.5rem;">
+                                    <div style="position:relative;">
+                                        <img id="discord-avatar" src="" alt="Avatar" style="width:70px;height:70px;border-radius:50%;border:3px solid #5865F2;box-shadow:0 0 20px rgba(88,101,242,0.4);">
+                                        <div style="position:absolute;bottom:2px;right:2px;width:20px;height:20px;background:#43B581;border:3px solid rgba(20,20,20,0.9);border-radius:50%;"></div>
+                                    </div>
+                                    <div style="flex:1;">
+                                        <div id="discord-username" style="color:#fff;font-weight:700;font-size:1.3rem;margin-bottom:0.25rem;"></div>
+                                        <div style="color:#5865F2;font-size:0.9rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Подключен</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="discord-logout-btn" style="background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);color:#fff;padding:0.9rem 2rem;font-size:0.9rem;font-weight:600;text-transform:uppercase;cursor:pointer;border-radius:4px;font-family:'Geogrotesque',sans-serif;letter-spacing:0.08em;transition:all 0.2s ease;width:100%;">ОТКЛЮЧИТЬ АККАУНТ</button>
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <label class="settings-label">ГРОМКОСТЬ МУЗЫКИ</label>
+                        <div class="settings-control">
+                            <input type="range" id="music-volume" class="cs2-slider" min="0" max="100" value="30" />
+                            <input type="number" id="music-volume-input" class="volume-input" min="0" max="100" value="30" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/horizontal-scroll.js"></script>
+    <script src="js/bracket-tooltips.js"></script>
     <script src="js/scripts.js"></script>
 </body>
 </html>

@@ -1,0 +1,210 @@
+#snowfall {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+#snowfall.active {
+    opacity: 1;
+}
+
+.snowflake {
+    position: absolute;
+    top: -10px;
+    color: #fff;
+    font-size: 1em;
+    opacity: 0.8;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+    }
+}
+
+body.winter-theme {
+    transition: all 1s ease;
+}
+
+body.winter-theme::before {
+    background: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,220,255,0.01) 2px, rgba(200,220,255,0.01) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(200,220,255,0.01) 2px, rgba(200,220,255,0.01) 4px),
+        radial-gradient(circle at 20% 30%, rgba(200,220,255,0.02) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(200,220,255,0.015) 0%, transparent 50%);
+    transition: background 1s ease;
+}
+
+body.winter-theme #page-battlepass {
+    background: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.08) 2px, rgba(255,255,255,0.08) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.08) 2px, rgba(255,255,255,0.08) 4px),
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        linear-gradient(180deg, #87ceeb 0%, #b0d4e3 50%, #d4e8f0 100%);
+    transition: background 1s ease;
+}
+
+body.winter-theme #page-battlepass::before {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.06) 2px, rgba(255,255,255,0.06) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.06) 2px, rgba(255,255,255,0.06) 4px),
+        url('https://gallery.yopriceville.com/downloadfullsize/send/24017') center bottom/contain no-repeat;
+    animation: slideUpForest 1s ease-out forwards;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes slideUpForest {
+    0% {
+        transform: translateY(100%);
+    }
+    40% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+body.winter-theme #main-nav {
+    background: rgba(10, 20, 40, 0.95);
+    border-bottom-color: rgba(150, 200, 255, 0.3);
+    transition: all 1s ease;
+}
+
+body.winter-theme .nav-btn.active {
+    color: #a0d0ff;
+}
+
+body.winter-theme .nav-btn.active::after {
+    background: #a0d0ff;
+}
+
+body.winter-theme .hero-section {
+    background: linear-gradient(180deg, rgba(10,20,40,0.8) 0%, rgba(0,10,30,0.95) 100%);
+}
+
+body.winter-theme .daily-case-title,
+body.winter-theme .section-title {
+    color: #a0d0ff;
+}
+
+body.winter-theme .daily-case-box.available {
+    border-color: #a0d0ff;
+    box-shadow: 0 0 20px rgba(160, 208, 255, 0.3);
+}
+
+body.winter-theme .case-open-btn {
+    background: #a0d0ff;
+}
+
+body.winter-theme .case-open-btn:hover {
+    background: #80b0ff;
+}
+
+body.winter-theme .bp-header {
+    background: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(100,100,100,0.1) 2px, rgba(100,100,100,0.1) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(100,100,100,0.1) 2px, rgba(100,100,100,0.1) 4px),
+        radial-gradient(circle at 50% 50%, rgba(80,80,80,0.15) 0%, transparent 60%),
+        linear-gradient(135deg, rgba(10,20,40,0.9), rgba(20,30,50,0.9));
+    border-bottom-color: rgba(160, 208, 255, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+body.winter-theme .bp-title {
+    color: #a0d0ff;
+}
+
+body.winter-theme .bp-xp-fill {
+    background: linear-gradient(90deg, #6090ff, #a0d0ff);
+}
+
+body.winter-theme .bp-reward-item {
+    background: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(100,100,100,0.15) 2px, rgba(100,100,100,0.15) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(100,100,100,0.15) 2px, rgba(100,100,100,0.15) 4px),
+        radial-gradient(circle at 30% 30%, rgba(80,80,80,0.2) 0%, transparent 60%),
+        radial-gradient(circle at 70% 70%, rgba(60,60,60,0.15) 0%, transparent 60%),
+        rgba(20, 30, 50, 0.95);
+    border-color: rgba(160, 208, 255, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+body.winter-theme .bp-reward-item.unlocked {
+    border-color: #a0d0ff;
+    box-shadow: 0 0 15px rgba(160, 208, 255, 0.3);
+}
+
+body.winter-theme .bp-reward {
+    background: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(100,100,100,0.1) 2px, rgba(100,100,100,0.1) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(100,100,100,0.1) 2px, rgba(100,100,100,0.1) 4px),
+        rgba(15, 20, 35, 0.9);
+}
+
+body.winter-theme .bp-quest-btn {
+    border-color: rgba(160, 208, 255, 0.3);
+}
+
+body.winter-theme .bp-quest-btn:hover {
+    border-color: rgba(160, 208, 255, 0.5);
+}
+
+body.winter-theme .quest-item {
+    border-color: rgba(160, 208, 255, 0.3);
+}
+
+body.winter-theme .quest-item.completed {
+    border-color: #4CAF50;
+}
+
+body.winter-theme .quest-progress {
+    color: #a0d0ff;
+}
+
+body.winter-theme .bp-reward-level {
+    background: rgba(160, 208, 255, 0.1);
+    color: #a0d0ff;
+}
+
+body.winter-theme .bp-reward-tooltip {
+    background: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(160,208,255,0.08) 2px, rgba(160,208,255,0.08) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(160,208,255,0.08) 2px, rgba(160,208,255,0.08) 4px),
+        radial-gradient(circle at 50% 50%, rgba(160,208,255,0.1) 0%, transparent 60%),
+        rgba(10, 20, 40, 0.98);
+    border-color: rgba(160, 208, 255, 0.3);
+}
+
+body.winter-theme .bp-tooltip-class {
+    color: #a0d0ff;
+}
+
+body.winter-theme .bp-tooltip-status {
+    color: #a0d0ff;
+    background: rgba(160, 208, 255, 0.1);
+    border-color: rgba(160, 208, 255, 0.3);
+}
+
+body.winter-theme .bp-tooltip-status.locked {
+    color: #888;
+    background: rgba(100, 100, 100, 0.1);
+    border-color: rgba(100, 100, 100, 0.3);
+}

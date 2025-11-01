@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zone Blast Winter 2025 - CS:GO Tournament</title>
+    <link rel="stylesheet" href="css/styles-winter.css">
+</head>
+<body class="scanlines winter-theme">
+    <div id="snowfall"></div>
+    
+    <nav id="main-nav">
+        <div class="nav-logo">ZONE BLAST</div>
+        <div class="nav-buttons">
+            <button class="nav-btn" data-page="inventory">ИНВЕНТАРЬ</button>
+            <button class="nav-btn active" data-page="main">ГЛАВНАЯ</button>
+            <button class="nav-btn" data-page="settings">НАСТРОЙКИ</button>
+        </div>
+    </nav>
+    
+    <div id="page-container">
+        <div class="page active" id="page-main">
+            <div class="page-content">
+                <header class="hud-border">
+                    <h1>ZONE BLAST</h1>
+                    <h2>WINTER 2025</h2>
+                    <p>COUNTER-STRIKE 2 TOURNAMENT</p>
+                    <div class="tournament-leader">
+                        <h3>ЛИДЕР ТУРНИРА</h3>
+                        <div class="leader-team">?</div>
+                        <div class="leader-stats">ОЧКИ: ? | ПОБЕДЫ: ?</div>
+                    </div>
+                    <button id="season-selector" class="season-btn">ПРОСМОТР ДРУГИХ СЕЗОНОВ</button>
+                </header>
+
+                <section id="teams">
+                    <h2>КОМАНДЫ</h2>
+                    <div class="results-title">ТУРНИРНАЯ ТАБЛИЦА</div>
+                    <div class="team-card">
+                        <table class="players-table" style="margin-bottom:2rem;">
+                            <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Название команды</th>
+                                    <th>Очки</th>
+                                    <th>Победы</th>
+                                    <th>Поражения</th>
+                                    <th>Выигранные раунды</th>
+                                    <th>Игры</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>?</td>
+                                    <td>?</td>
+                                    <td>?</td>
+                                    <td>?</td>
+                                    <td>?</td>
+                                    <td>?</td>
+                                    <td>?</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="analytics">
+                    <h2>АНАЛИТИКА</h2>
+                    <div class="stats">
+                        <div class="results-title">РЕЗУЛЬТАТЫ МАТЧЕЙ</div>
+                        <div class="team-card">
+                            <div class="days-accordion" aria-label="Выбор дня">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        
+        <div class="page" id="page-inventory">
+            <div class="page-content">
+                <div class="inventory-grid" style="margin-top:3rem;">
+                    <div class="inventory-item music-kit active" data-music="csgo">
+                        <div class="item-box">
+                            <div class="item-icon">🎵</div>
+                        </div>
+                        <div class="item-info">
+                            <div class="item-rarity">Музыкальный набор</div>
+                            <div class="item-name">Valve - CS:GO</div>
+                            <div class="item-status">ЭКИПИРОВАН</div>
+                        </div>
+                    </div>
+                    <div class="inventory-item music-kit" data-music="cs2">
+                        <div class="item-box">
+                            <div class="item-icon">🎵</div>
+                        </div>
+                        <div class="item-info">
+                            <div class="item-rarity">Музыкальный набор</div>
+                            <div class="item-name">Valve - Counter-Strike 2</div>
+                            <div class="item-status">НАЖМИТЕ ДЛЯ ЭКИПИРОВКИ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page" id="page-settings">
+            <div class="page-content">
+                <div style="max-width:600px;margin:5rem auto;">
+                    <div class="settings-item">
+                        <label class="settings-label">ГРОМКОСТЬ МУЗЫКИ</label>
+                        <div class="settings-control">
+                            <input type="range" id="music-volume" class="cs2-slider" min="0" max="100" value="30" />
+                            <input type="number" id="music-volume-input" class="volume-input" min="0" max="100" value="30" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/scripts-winter.js"></script>
+</body>
+</html>

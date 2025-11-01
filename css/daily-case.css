@@ -1,0 +1,132 @@
+#daily-case {
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.daily-case-container {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.daily-case-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #ffb347;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.daily-case-box {
+    background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(40, 40, 40, 0.9));
+    border: 2px solid #3a3a3a;
+    height: 150px;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.daily-case-box.available {
+    border-color: #ffb347;
+    box-shadow: 0 0 20px rgba(255, 179, 71, 0.3);
+}
+
+.case-reel {
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: left 3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.case-item {
+    min-width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    background: rgba(50, 50, 50, 0.5);
+    border: 2px solid #555;
+    font-size: 2rem;
+}
+
+.case-item.rare {
+    border-color: #4b69ff;
+    box-shadow: 0 0 10px rgba(75, 105, 255, 0.3);
+}
+
+.case-item.legendary {
+    border-color: #d32ce6;
+    box-shadow: 0 0 10px rgba(211, 44, 230, 0.3);
+}
+
+.case-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem;
+    transition: all 0.5s ease;
+}
+
+.case-icon.shake {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+    25% { transform: translate(-50%, -50%) rotate(-5deg); }
+    75% { transform: translate(-50%, -50%) rotate(5deg); }
+}
+
+.case-selector {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 3px;
+    height: 120px;
+    background: #ffb347;
+    box-shadow: 0 0 10px rgba(255, 179, 71, 0.5);
+    z-index: 10;
+}
+
+.case-result {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #ffb347;
+    min-height: 30px;
+    margin-bottom: 1rem;
+}
+
+.case-open-btn {
+    width: 100%;
+    padding: 1rem;
+    background: #ffb347;
+    border: none;
+    color: #000;
+    font-weight: 900;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: 'Geogrotesque', Arial, sans-serif;
+    transition: all 0.2s ease;
+}
+
+.case-open-btn:hover {
+    background: #ffa500;
+    transform: scale(1.02);
+}
+
+.case-open-btn:disabled {
+    background: #3a3a3a;
+    color: #666;
+    cursor: not-allowed;
+    transform: scale(1);
+}

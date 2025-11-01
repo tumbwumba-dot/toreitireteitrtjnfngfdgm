@@ -1,0 +1,86 @@
+.steam-auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.98);
+    z-index: 99999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.steam-auth-container {
+    background: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(100,100,100,0.1) 2px, rgba(100,100,100,0.1) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(100,100,100,0.1) 2px, rgba(100,100,100,0.1) 4px),
+        rgba(20, 20, 20, 0.95);
+    border: 2px solid rgba(255, 179, 71, 0.3);
+    border-radius: 8px;
+    padding: 3rem;
+    text-align: center;
+    min-width: 400px;
+    animation: authAppear 0.5s ease-out;
+}
+
+@keyframes authAppear {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.steam-auth-logo {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+}
+
+.steam-auth-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffb347;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+}
+
+.steam-auth-subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+.steam-login-btn {
+    background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+    border: 2px solid #66c0f4;
+    color: #fff;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Geogrotesque', sans-serif;
+    letter-spacing: 0.08em;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.steam-login-btn:hover {
+    background: linear-gradient(135deg, #2a475e 0%, #1b2838 100%);
+    border-color: #88d4ff;
+    box-shadow: 0 5px 20px rgba(102, 192, 244, 0.3);
+}
+
+.steam-icon {
+    width: 24px;
+    height: 24px;
+}

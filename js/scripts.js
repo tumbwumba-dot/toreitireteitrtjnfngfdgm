@@ -1,686 +1,896 @@
-// CS:GO Style JavaScript for Zone Blast Autumn 2025
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Zone Blast Autumn 2025 - CS:GO Tournament Interface Loaded');
 
-    // CS:GO HUD style animations
-    // Animations/observer disabled for static UI
-
-    // Observe HUD panels
-    // Ensure cards are visible and static (no JS-driven transitions)
-    document.querySelectorAll('.team-card, .graph-card').forEach(card => {
-        card.style.opacity = '1';
-        card.style.transform = 'none';
-        card.style.transition = 'none';
-    });
-
-    // CS:GO click effects - weapon selection style
-    // Click effects disabled for static UI — keep interaction via CSS only
-
-    // CS:GO radar-style chart placeholders
-    function drawCSGOChart(canvasId, title) {
-        const canvas = document.getElementById(canvasId);
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        const width = canvas.width;
-        const height = canvas.height;
-
-        // Clear canvas with CS:GO dark theme
-        ctx.clearRect(0, 0, width, height);
-
-        // Draw grid background like radar
-        ctx.strokeStyle = 'rgba(255, 165, 0, 0.1)';
-        ctx.lineWidth = 1;
-
-        // Vertical lines
-        for (let i = 0; i <= width; i += 20) {
-            ctx.beginPath();
-            ctx.moveTo(i, 0);
-            ctx.lineTo(i, height);
-            ctx.stroke();
+    // Discord Auth
+    const checkAuth = () => {
+        const discordUser = sessionStorage.getItem('discord_user');
+        if(discordUser) {
+            const user = JSON.parse(discordUser);
+            document.getElementById('discord-not-connected').style.display = 'none';
+            document.getElementById('discord-connected').style.display = 'block';
+            document.getElementById('discord-username').textContent = user.username;
+            document.getElementById('discord-avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+            return true;
         }
-
-        // Horizontal lines
-        for (let i = 0; i <= height; i += 20) {
-            ctx.beginPath();
-            ctx.moveTo(0, i);
-            ctx.lineTo(width, i);
-            ctx.stroke();
-        }
-
-        // Draw title with CS:GO font style
-        ctx.fillStyle = '#ffa500';
-        ctx.font = 'bold 16px "Geogrotesque", Arial, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(title, width / 2, height / 2 - 10);
-
-        // Draw "NO DATA" like CS:GO HUD
-        ctx.fillStyle = '#666666';
-        ctx.font = '12px "Geogrotesque", Arial, sans-serif';
-        ctx.fillText('AWAITING DATA STREAM', width / 2, height / 2 + 10);
-
-        // Draw some random data points like radar signals
-        for (let i = 0; i < 8; i++) {
-            const x = Math.random() * width;
-            const y = Math.random() * height;
-            ctx.fillStyle = Math.random() > 0.5 ? '#ff4500' : '#00ff00';
-            ctx.beginPath();
-            ctx.arc(x, y, 2, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    // Initialize CS:GO charts
-    setTimeout(() => {
-        drawCSGOChart('kdChart', 'СТАТИСТИКА K/D');
-        drawCSGOChart('adrChart', 'МЕТРИКИ ADR');
-    }, 1000);
-
-    /* Вертикальный аккордеон дней для аналитики матчей */
-    (function setupDaysAccordion() {
-        const days = [
-            '30 октября', '29 октября', '28 октября', '27 октября'
-        ];
-        const matchData = {
-            '30 октября': [
-                    {a: 'ChocoSteep', b: 'Rufat', score: '', status: 'waiting', map: 'Mirage, Inferno, Anubis', results: [{score: '13-8', winner: 'a'}, null, null]}
-                ],
-            '29 октября': [
-                {a: 'Beta Force', b: 'Alpha Squad', score: '16-14', win: 'a', map: 'Dust2'},
-                {a: 'Epsilon', b: 'Zeta', score: '10-16', win: 'b', map: 'Inferno'}
-            ],
-            '28 октября': [
-                {a: 'Alpha Squad', b: 'Gamma Team', score: '16-10', win: 'a', map: 'Inferno'}
-            ],
-            '27 октября': [
-                {a: 'Delta Ops', b: 'Beta Force', score: '9-16', win: 'b', map: 'Nuke'}
-            ]
-        };
-
-        const accordion = document.querySelector('.days-accordion');
-        if (!accordion) return;
-
-        days.forEach(day => {
-            const block = document.createElement('div');
-            block.className = 'day-block';
-
-            const title = document.createElement('div');
-            title.className = 'day-title';
-            title.textContent = day;
-            block.appendChild(title);
-
-            const matchesContainer = document.createElement('div');
-            matchesContainer.className = 'matches-container';
-
-            const table = document.createElement('table');
-            table.className = 'matches-table';
-            table.innerHTML = `<thead><tr><th>МАТЧ</th><th>КОМАНДА A</th><th>КОМАНДА B</th><th>СЧЕТ</th><th>КАРТА</th></tr></thead><tbody></tbody>`;
-            matchesContainer.appendChild(table);
-            block.appendChild(matchesContainer);
-
-            // Заполнение таблицы
-            const tbody = table.querySelector('tbody');
-            const matches = matchData[day] || [];
-            matches.forEach((m, i) => {
-                // Если указано несколько карт через запятую — отрисовать по раунду
-                const maps = (m.map || '').split(',').map(s => s.trim()).filter(Boolean);
-                if (maps.length > 1) {
-                    maps.forEach((mapName, j) => {
-                        const tr = document.createElement('tr');
-                        const tdIndex = document.createElement('td');
-                        // --- TAB DATA ---
-                        const tabStats = {
-                            'ChocoSteep_vs_Rufat_Mirage': {
-                                left: [
-                                    {name: '525', avatar: 'https://avatars.steamstatic.com/3ee8c546ec12a5c969feac1edac9807ac64aed19_full.jpg', kills: 33, deaths: 11, assists: 2, percent: 48, damage: 2969},
-                                    {name: 'MyagkoyPosadki', avatar: 'https://avatars.steamstatic.com/750944021bca9d5fee0f6fd4e2188f85d7d30d79_full.jpg', kills: 24, deaths: 10, assists: 5, percent: 33, damage: 2521},
-                                    {name: 'sw1lows', avatar: 'https://avatars.steamstatic.com/b2ee52a62ea353bb772742aaec8c4990e4a5d412_full.jpg', kills: 5, deaths: 15, assists: 11, percent: 20, damage: 1103}
-                                ],
-                                right: [
-                                    {name: 'MrAgusha', avatar: 'https://avatars.fastly.steamstatic.com/c01bb12da6c5edb839ea14e004b726d6f0f55987_full.jpg', kills: 15, deaths: 15, assists: 5, percent: 33, damage: 1783},
-                                    {name: '6SURA9', avatar: 'https://avatars.fastly.steamstatic.com/05d7972dc18f8545ce204072f3b8e642f4950993_full.jpg', kills: 8, deaths: 15, assists: 4, percent: 12, damage: 983},
-                                    {name: 'qwerty_', avatar: 'https://shared.fastly.steamstatic.com/community_assets/images/items/2873080/b7aa246e15b0bb0033e3566b4ed7db3861efad84.gif', kills: 8, deaths: 19, assists: 3, percent: 50, damage: 974},
-                                    {name: 'uc0', avatar: '', kills: 5, deaths: 15, assists: 1, percent: 40, damage: 476}
-                                ]
-                            }
-                        };
-
-                        function showTabPanel(ev, tabKey) {
-                            closeTabPanel();
-                            const tab = tabStats[tabKey];
-                            if (!tab) return;
-
-                            // CS2 TAB header info
-                            const mapIcon = 'https://files.bo3.gg/uploads/image/41377/image/webp-81fe4ce1e60e951d61e41a7b7dbfe8ee.webp'; // Mirage
-                            const score = '13 : 8';
-                            const timer = '27:19';
-
-                            const panel = document.createElement('div');
-                            panel.id = 'tab-panel';
-                            panel.className = 'tab-panel';
-                            panel.innerHTML = `
-                                <div class="tab-header">
-                                    <span class="tab-title">
-                                        <img src="${mapIcon}" class="tab-map" /> Mirage
-                                    </span>
-                                    <button class="tab-close">×</button>
-                                </div>
-                                <div class="tab-info">
-                                    <span class="tab-score">${score}</span>
-                                    <span class="tab-timer">${timer}</span>
-                                </div>
-                                <div class="tab-content">
-                                    <div class="tab-team tab-team-left">
-                                        <div class="tab-team-title">ChocoSteep</div>
-                                        <div class="tab-players">
-                                            ${tab.left.map((p, idx) => `
-                                                <div class="tab-player tab-win">
-                                                    <img src="${p.avatar}" class="tab-avatar" />
-                                                    <div class="tab-name">${p.name}</div>
-                                                    <div class="tab-stats">
-                                                        <span>${p.kills}</span>
-                                                        <span>${p.deaths}</span>
-                                                        <span>${p.assists}</span>
-                                                        <span>${p.percent}%</span>
-                                                        <span>${p.damage}</span>
-                                                    </div>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    </div>
-                                    <div class="tab-team tab-team-right">
-                                        <div class="tab-team-title">Rufat</div>
-                                        <div class="tab-players">
-                                            ${tab.right.map((p, idx) => `
-                                                <div class="tab-player tab-loss">
-                                                    <img src="${p.avatar}" class="tab-avatar" />
-                                                    <div class="tab-name">${p.name}</div>
-                                                    <div class="tab-stats">
-                                                        <span>${p.kills}</span>
-                                                        <span>${p.deaths}</span>
-                                                        <span>${p.assists}</span>
-                                                        <span>${p.percent}%</span>
-                                                        <span>${p.damage}</span>
-                                                    </div>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-
-                            document.body.appendChild(panel);
-
-                            // Позиционирование окна
-                            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-                            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-                            const pw = panel.offsetWidth || 800;
-                            const ph = panel.offsetHeight || 400;
-                            const left = (vw - pw) / 2;
-                            const top = (vh - ph) / 2;
-
-                            panel.style.left = left + 'px';
-                            panel.style.top = top + 'px';
-
-                            panel.querySelector('.tab-close').onclick = closeTabPanel;
-                            setTimeout(() => {
-                                document.addEventListener('click', onDocClickForTabPanel);
-                                document.addEventListener('keydown', onEscCloseTabPanel);
-                            }, 50);
-                        }
-                        function closeTabPanel(){
-                            const ex = document.getElementById('tab-panel');
-                            if(ex) ex.remove();
-                            document.removeEventListener('click', onDocClickForTabPanel);
-                            document.removeEventListener('keydown', onEscCloseTabPanel);
-                        }
-                        function onDocClickForTabPanel(e){
-                            const panel = document.getElementById('tab-panel');
-                            if(!panel) return;
-                            if(!panel.contains(e.target)) closeTabPanel();
-                        }
-                        function onEscCloseTabPanel(e){ if(e.key === 'Escape') closeTabPanel(); }
-
-                        days.forEach(day => {
-                            const block = document.createElement('div');
-                            block.className = 'day-block';
-
-                            const title = document.createElement('div');
-                            title.className = 'day-title';
-                            title.textContent = day;
-                            block.appendChild(title);
-
-                            const matchesContainer = document.createElement('div');
-                            matchesContainer.className = 'matches-container';
-
-                            const table = document.createElement('table');
-                            table.className = 'matches-table';
-                            table.innerHTML = `<thead><tr><th>МАТЧ</th><th>КОМАНДА A</th><th>КОМАНДА B</th><th>СЧЕТ</th><th>КАРТА</th></tr></thead><tbody></tbody>`;
-                            matchesContainer.appendChild(table);
-                            block.appendChild(matchesContainer);
-
-                            // Заполнение таблицы
-                            const tbody = table.querySelector('tbody');
-                            const matches = matchData[day] || [];
-                            matches.forEach((m, i) => {
-                                const maps = (m.map || '').split(',').map(s => s.trim()).filter(Boolean);
-                                if (maps.length > 1) {
-                                    maps.forEach((mapName, j) => {
-                                        const tr = document.createElement('tr');
-                                        const tdIndex = document.createElement('td');
-                                        tdIndex.textContent = `${j+1}`;
-
-                                        const tdA = document.createElement('td');
-                                        tdA.textContent = m.a;
-                                        tdA.classList.add('team-cell');
-                                        tdA.addEventListener('click', (ev) => {
-                                            ev.stopPropagation();
-                                            showTeamPanel(ev, m.a);
-                                        });
-
-                                        const tdB = document.createElement('td');
-                                        tdB.textContent = m.b;
-                                        tdB.classList.add('team-cell');
-                                        tdB.addEventListener('click', (ev) => {
-                                            ev.stopPropagation();
-                                            showTeamPanel(ev, m.b);
-                                        });
-
-                                        const tdScore = document.createElement('td');
-                                        const result = (m.results && m.results[j]) || null;
-                                        if (result && result.score) {
-                                            console.log('Processing score for multiple maps:', result.score, 'winner:', result.winner);
-                                            // Добавляем обработчик TAB только для первого раунда первого матча
-                                            if (day === '30 октября' && i === 0 && j === 0) {
-                                                tdScore.style.cursor = 'pointer';
-                                                tdScore.title = 'Показать TAB';
-                                                tdScore.addEventListener('click', (ev) => {
-                                                    ev.stopPropagation();
-                                                    showTabPanel(ev, 'ChocoSteep_vs_Rufat_Mirage');
-                                                });
-                                            }
-                                            // Для multiple maps - применять цвета победителя
-                                            if (result.winner === 'a') {
-                                                tdA.classList.add('team-win');
-                                                tdB.classList.add('team-loss');
-                                                tdScore.textContent = result.score;
-                                                console.log('Applied win/loss colors for team A in multiple maps');
-                                            } else if (result.winner === 'b') {
-                                                tdB.classList.add('team-win');
-                                                tdA.classList.add('team-loss');
-                                                tdScore.textContent = result.score;
-                                                console.log('Applied win/loss colors for team B in multiple maps');
-                                            } else {
-                                                tdScore.textContent = result.score;
-                                                console.log('No winner specified for multiple maps');
-                                            }
-                                        } else {
-                                            tdScore.className = 'waiting';
-                                            tdScore.innerHTML = `<span class="waiting-text">ожидание</span>`;
-                                            console.log('Score waiting for multiple maps');
-                                        }
-
-                                        const tdMap = document.createElement('td');
-                                        tdMap.textContent = mapName;
-                                        tdMap.classList.add('map-cell');
-                                        const mn = (mapName || '').trim().toLowerCase();
-                                        if (mn === 'mirage') tdMap.classList.add('map-mirage');
-                                        if (mn === 'inferno') tdMap.classList.add('map-inferno');
-                                        if (mn === 'anubis') tdMap.classList.add('map-anubis');
-
-                                        tr.appendChild(tdIndex);
-                                        tr.appendChild(tdA);
-                                        tr.appendChild(tdB);
-                                        tr.appendChild(tdScore);
-                                        tr.appendChild(tdMap);
-
-                                        tbody.appendChild(tr);
-                                    });
-                                } else {
-                                    // ...existing code...
-                                }
-                            });
-
-                            title.addEventListener('click', (e) => {
-                                document.querySelectorAll('.day-block').forEach(b => {
-                                    if (b !== block) b.classList.remove('active');
-                                });
-                                block.classList.toggle('active');
-                            });
-
-                            matchesContainer.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                            });
-
-                            accordion.appendChild(block);
-                        });
-                    });
-
-                    const tdScore = document.createElement('td');
-                    const singleResult = (m.results && m.results[0]) || null;
-                    if (singleResult && singleResult.score) {
-                        // single match: показать мини-разделение с именами и числами под ними
-                        const partsS = (singleResult.score || '').split('-').map(s => s.trim());
-                        const leftS = partsS[0] || '';
-                        const rightS = partsS[1] || '';
-                        const splitS = document.createElement('div');
-                        splitS.className = 'score-split';
-                        const l = document.createElement('div');
-                        l.className = 'ss-left';
-                        l.innerHTML = `<div class='ss-name'>${m.a}</div><div class='ss-score'>${leftS}</div>`;
-                        const r = document.createElement('div');
-                        r.className = 'ss-right';
-                        r.innerHTML = `<div class='ss-name'>${m.b}</div><div class='ss-score'>${rightS}</div>`;
-                        const centerS = document.createElement('div');
-                        centerS.className = 'ss-center';
-                        centerS.textContent = 'РЕЗУЛЬТАТЫ';
-                        splitS.appendChild(l);
-                        splitS.appendChild(centerS);
-                        splitS.appendChild(r);
-                        tdScore.appendChild(splitS);
-                        tdScore.className = '';
-                        // no gradient — keep score plain/white
-                        if (singleResult.winner === 'a') {
-                            tdA.classList.add('team-win');
-                            tdB.classList.add('team-loss');
-                        } else if (singleResult.winner === 'b') {
-                            tdB.classList.add('team-win');
-                            tdA.classList.add('team-loss');
-                        }
-                    } else if (m.status === 'waiting') {
-                        tdScore.className = 'waiting';
-                        tdScore.innerHTML = `<span class="waiting-text">ожидание</span>`;
-                    } else {
-                        const scoreClass = m.win === 'a' ? 'score-win' : (m.win === 'b' ? 'score-loss' : '');
-                        tdScore.className = scoreClass;
-                        tdScore.textContent = m.score;
-                    }
-
-                    const tdMap = document.createElement('td');
-                    tdMap.textContent = m.map;
-                    tdMap.classList.add('map-cell');
-                    const mm = (m.map || '').trim().toLowerCase();
-                    if (mm === 'mirage') tdMap.classList.add('map-mirage');
-                    if (mm === 'inferno') tdMap.classList.add('map-inferno');
-                    if (mm === 'anubis') tdMap.classList.add('map-anubis');
-
-                    tr.appendChild(tdIndex);
-                    tr.appendChild(tdA);
-                    tr.appendChild(tdB);
-                    tr.appendChild(tdScore);
-                    tr.appendChild(tdMap);
-
-                    tbody.appendChild(tr);
-                }
-            });
-
-
-            // Клик только по заголовку дня — раскрывает/скрывает таблицу
-            title.addEventListener('click', (e) => {
-                // Скрыть все остальные
-                document.querySelectorAll('.day-block').forEach(b => {
-                    if (b !== block) b.classList.remove('active');
-                });
-                // Переключить текущий
-                block.classList.toggle('active');
-            });
-
-            // Предотвращаем всплытие кликов из таблицы/контента, чтобы они не закрывали блок
-            matchesContainer.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-
-            accordion.appendChild(block);
-        });
-    })();
-
-    // CS:GO loading sequence
-    function startLoadingSequence() {
-        const header = document.querySelector('header');
-        header.style.opacity = '0';
-        header.style.transform = 'translateY(-20px)';
-
-        setTimeout(() => {
-            header.style.transition = 'all 1s ease';
-            header.style.opacity = '1';
-            header.style.transform = 'translateY(0)';
-
-            // Simulate loading different HUD elements
-            setTimeout(() => playLoadingSound(), 500);
-        }, 200);
-    }
-
-    function playLoadingSound() {
-        // Simulate CS:GO loading sounds with console messages
-        const messages = [
-            'Loading HUD interface...',
-            'Connecting to tournament server...',
-            'Synchronizing player data...',
-            'Initializing match statistics...',
-            'Tournament interface ready.'
-        ];
-
-        messages.forEach((msg, index) => {
-            setTimeout(() => console.log(`[CS:GO] ${msg}`), index * 300);
-        });
-    }
-
-    // Normal cursor
-    document.body.style.cursor = 'default';
-
-    // Add CS:GO style weapon buy menu effect to stats
-    // Text-shadow hover scripts disabled to keep static appearance; CSS handles simple hovers
-
-    // Initialize CS:GO interface (loading sequence disabled for static UI)
-    // startLoadingSequence() intentionally not called to avoid header animation
-
-    console.log('CS:GO Tournament Interface initialized successfully!');
-});
-
-/* --- Team panel + Steam avatar integration helpers --- */
-(function(){
-    // Map of team name -> array of steam profile URLs (user-provided)
-    const teamPlayers = {
-        'ChocoSteep': [
-            'https://steamcommunity.com/profiles/76561199508252956/',
-            'https://steamcommunity.com/profiles/76561199410968139/',
-            'https://steamcommunity.com/profiles/76561199583135417/'
-        ],
-        'Rufat': [
-            'https://steamcommunity.com/profiles/76561199584531950/',
-            'https://steamcommunity.com/profiles/76561199851125647/',
-            'https://steamcommunity.com/profiles/76561199729749913/',
-            'https://steamcommunity.com/profiles/76561199142259766/'
-        ]
+        return false;
     };
-
-    function extractSteamId(url){
-        try{
-            const u = new URL(url);
-            const parts = u.pathname.split('/').filter(Boolean);
-            // /profiles/<steamid> or /id/<vanity>
-            if(parts[0] === 'profiles' && parts[1]) return parts[1];
-            return null; // vanity or unknown
-        }catch(e){ return null; }
-    }
-
-    async function fetchAvatarsByApi(steamIds){
-        // Загружаем аватарки и имена напрямую через прокси на Steam API
-        const STEAM_PROXY_BASE = 'https://zoneblast.cc';
-        // out: steamid -> { avatar: url|string, name: string|undefined }
-        const out = {};
-        if (!steamIds || steamIds.length === 0) return out;
-
-        // Пытаемся получить через прокси
-        try {
-            const q = encodeURIComponent(steamIds.join(','));
-            const url = `${STEAM_PROXY_BASE}/api/steam/avatars?ids=${q}`;
-            const res = await fetch(url, { cache: 'no-store' });
-            if (res && res.ok) {
-                const data = await res.json();
-                // Ожидаем формат: { "7656...": { avatar: "https://...", name: "PlayerName" }, ... }
-                if (data && typeof data === 'object') {
-                    Object.keys(data).forEach(k => {
-                        if (data[k]) {
-                            out[k] = data[k];
-                        }
-                    });
+    
+    const requireAuth = () => {
+        if(!checkAuth()) {
+            new Audio('sounds/mainmenu_press_settings_02.wav').play().catch(e => {});
+            document.getElementById('page-' + currentPage).classList.remove('active');
+            document.getElementById('page-settings').classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-page="settings"]').classList.add('active');
+            
+            if(currentPage === 'battlepass') {
+                document.body.classList.remove('winter-theme');
+                document.getElementById('snowfall').classList.remove('active');
+                if(window.snowInterval) {
+                    clearInterval(window.snowInterval);
+                    window.snowInterval = null;
                 }
             }
-        } catch (err) {
-            console.warn('Steam proxy fetch failed:', err);
+            
+            currentPage = 'settings';
+            return false;
         }
-
-        // Hardcoded данные для известных игроков (fallback)
-        const hardcoded = {
-            '76561199508252956': { avatar: 'https://avatars.steamstatic.com/3ee8c546ec12a5c969feac1edac9807ac64aed19_full.jpg', name: '525' },
-            '76561199410968139': { avatar: 'https://avatars.steamstatic.com/750944021bca9d5fee0f6fd4e2188f85d7d30d79_full.jpg', name: 'MyagkoyPosadki' },
-            '76561199583135417': { avatar: 'https://avatars.steamstatic.com/b2ee52a62ea353bb772742aaec8c4990e4a5d412_full.jpg', name: 'sw1lows' },
-            '76561199584531950': { avatar: 'https://avatars.fastly.steamstatic.com/c01bb12da6c5edb839ea14e004b726d6f0f55987_full.jpg', name: 'MrAgusha' },
-            '76561199851125647': { avatar: 'https://avatars.fastly.steamstatic.com/05d7972dc18f8545ce204072f3b8e642f4950993_full.jpg', name: '6SURA9' },
-            '76561199729749913': { avatar: 'https://shared.fastly.steamstatic.com/community_assets/images/items/2873080/b7aa246e15b0bb0033e3566b4ed7db3861efad84.gif', name: 'qwerty' },
-            '76561199142259766': { avatar: 'https://avatars.fastly.steamstatic.com/fdfccac83248b06b3292a7f8a4bf3278e3b37772_full.jpg', name: '☠😡 ᗪυ๓α 💔🐲' }
-        };
-
-        // Для отсутствующих — hardcoded или placeholder
-        steamIds.forEach(id => {
-            if (!out[id] && hardcoded[id]) {
-                out[id] = hardcoded[id];
-            } else if (!out[id]) {
-                out[id] = { avatar: 'https://via.placeholder.com/48x48?text=User', name: `Player ${id.slice(-5)}` };
+        return true;
+    };
+    
+    checkAuth();
+    
+    const discordLoginBtn = document.getElementById('discord-login-btn');
+    discordLoginBtn.addEventListener('mouseenter', () => {
+        new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {});
+        discordLoginBtn.style.boxShadow = '0 6px 20px rgba(88,101,242,0.5)';
+    });
+    discordLoginBtn.addEventListener('mouseleave', () => {
+        discordLoginBtn.style.boxShadow = '0 4px 15px rgba(88,101,242,0.3)';
+    });
+    discordLoginBtn.addEventListener('click', () => {
+        new Audio('sounds/inventory_new_item_accept_01.wav').play().catch(e => {});
+        const clientId = '1434129915502133249';
+        const redirectUri = encodeURIComponent('http://127.0.0.1:5500/index.html');
+        const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=identify`;
+        const popup = window.open(authUrl, 'Discord Auth', 'width=500,height=700,left=100,top=100');
+        const checkClosed = setInterval(() => {
+            if(popup.closed) {
+                clearInterval(checkClosed);
+                const wasAuthed = checkAuth();
+                if(wasAuthed) {
+                    new Audio('sounds/item_drop2_uncommon.wav').play().catch(e => {});
+                }
+            }
+        }, 500);
+    });
+    
+    const discordLogoutBtn = document.getElementById('discord-logout-btn');
+    discordLogoutBtn.addEventListener('mouseenter', () => {
+        new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {});
+        discordLogoutBtn.style.background = 'rgba(255,255,255,0.1)';
+        discordLogoutBtn.style.borderColor = 'rgba(255,255,255,0.2)';
+    });
+    discordLogoutBtn.addEventListener('mouseleave', () => {
+        discordLogoutBtn.style.background = 'rgba(255,255,255,0.05)';
+        discordLogoutBtn.style.borderColor = 'rgba(255,255,255,0.1)';
+    });
+    discordLogoutBtn.addEventListener('click', () => {
+        new Audio('sounds/sidemenu_click_01.wav').play().catch(e => {});
+        sessionStorage.removeItem('discord_user');
+        document.getElementById('discord-not-connected').style.display = 'block';
+        document.getElementById('discord-connected').style.display = 'none';
+    });
+    
+    const hash = window.location.hash;
+    if(hash && hash.includes('access_token')) {
+        const params = new URLSearchParams(hash.substring(1));
+        const token = params.get('access_token');
+        fetch('https://discord.com/api/users/@me', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(r => r.json())
+        .then(user => {
+            sessionStorage.setItem('discord_user', JSON.stringify(user));
+            if(window.opener) {
+                window.opener.sessionStorage.setItem('discord_user', JSON.stringify(user));
+                window.close();
+            } else {
+                window.location.hash = '';
+                checkAuth();
+                new Audio('sounds/item_drop2_uncommon.wav').play().catch(e => {});
             }
         });
-
-        return out;
     }
+    
 
-
-    function closeTeamPanel(){
-        const ex = document.getElementById('team-panel');
-        if(ex) ex.remove();
-        document.removeEventListener('click', onDocClickForPanel);
-        document.removeEventListener('keydown', onEscClose);
-    }
-
-    function onDocClickForPanel(e){
-        const panel = document.getElementById('team-panel');
-        if(!panel) return;
-        if(!panel.contains(e.target)) closeTeamPanel();
-    }
-
-    function onEscClose(e){ if(e.key === 'Escape') closeTeamPanel(); }
-
-    async function showTeamPanel(ev, teamName){
-        console.log('showTeamPanel called', teamName, ev && {clientX: ev.clientX, clientY: ev.clientY});
-        console.log('teamPanel: step 1 - start');
-        try{
-            closeTeamPanel();
-        const profiles = teamPlayers[teamName] || [];
-        console.log('teamPanel: step 1.5 - profiles found:', profiles.length, 'for team:', teamName);
-
-        if (profiles.length === 0) {
-            console.warn('No profiles found for team:', teamName);
-            return;
+    
+    const soundOverlay = document.createElement('div');
+    soundOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999999;display:flex;align-items:center;justify-content:center;';
+    soundOverlay.innerHTML = '<div style="text-align:center;font-family:Geogrotesque,Arial,sans-serif;"><h2 style="color:#ffa500;font-size:2.5rem;font-weight:900;margin-bottom:2rem;">НАЖМИТЕ ДЛЯ АКТИВАЦИИ</h2></div>';
+    document.body.appendChild(soundOverlay);
+    
+    let currentMusicKit = localStorage.getItem('music_kit') || 'cs2';
+    const musicTracks = {
+        csgo: ['sounds/mainmenu.mp3', 'sounds/mainmenu1.mp3'],
+        cs2: ['sounds/mainmenu2.mp3'],
+        lastchristmas: ['sounds/SpotiDownloader.com - Last Christmas - Wham!.mp3'],
+        perviyraz: ['sounds/SpotiDownloader.com - Первый раз - remix nevroz - JojoHF.mp3']
+    };
+    let currentTrackIndex = 0;
+    const bgMusic = new Audio();
+    bgMusic.volume = 0.3;
+    
+    const playNextTrack = () => {
+        const tracks = musicTracks[currentMusicKit];
+        if(!tracks) return;
+        bgMusic.src = tracks[currentTrackIndex];
+        bgMusic.play().catch(e => {});
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+    };
+    
+    bgMusic.addEventListener('ended', playNextTrack);
+    
+    document.querySelectorAll('.music-kit').forEach(kit => {
+        const musicType = kit.dataset.music;
+        const status = kit.querySelector('.tooltip-status');
+        if(musicType === currentMusicKit) {
+            kit.classList.add('active');
+            if(status) {
+                status.classList.remove('not-equipped');
+                status.classList.add('equipped');
+                status.textContent = 'ЭКИПИРОВАН';
+            }
+        } else {
+            kit.classList.remove('active');
+            if(status) {
+                status.classList.remove('equipped');
+                status.classList.add('not-equipped');
+                status.textContent = 'НЕ ЭКИПИРОВАН';
+            }
         }
+    });
+    
+    const activateSound = () => {
+        soundOverlay.style.opacity = '0';
+        soundOverlay.style.transition = 'opacity 0.5s';
+        setTimeout(() => soundOverlay.remove(), 500);
+        new Audio('sounds/inventory_new_item_accept_01.wav').play().catch(e => {});
+        playNextTrack();
+    };
+    
+    soundOverlay.addEventListener('click', activateSound);
+    document.addEventListener('keydown', (e) => {
+        if(e.key.length === 1 || e.key === ' ') {
+            activateSound();
+        }
+    }, {once: true});
+    
+    const pages = ['inventory', 'seasons', 'main', 'settings', 'battlepass'];
+    let currentPage = 'main';
+    
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    document.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    document.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if(Math.abs(diff) < 50) return;
+        const currentIndex = pages.indexOf(currentPage);
+        let targetIndex = currentIndex;
+        if(diff > 0 && currentIndex < pages.length - 1) {
+            targetIndex = currentIndex + 1;
+        } else if(diff < 0 && currentIndex > 0) {
+            targetIndex = currentIndex - 1;
+        }
+        if(targetIndex !== currentIndex) {
+            const targetBtn = document.querySelector(`[data-page="${pages[targetIndex]}"]`);
+            if(targetBtn) targetBtn.click();
+        }
+    });
+    
+    // Battle Pass system
+    // Start Battle Pass button
+    const startBpBtn = document.getElementById('start-battlepass');
+    if(startBpBtn) {
+        startBpBtn.addEventListener('click', () => {
+            if(!requireAuth()) return;
+            new Audio('sounds/sidemenu_click_01.wav').play().catch(e => {});
+            setTimeout(() => {
+                new Audio('sounds/item_drop2_uncommon.wav').play().catch(e => {});
+            }, 100);
+            document.getElementById('bp-start-container').style.display = 'none';
+            document.getElementById('bp-level-container').style.display = 'block';
+            document.getElementById('bp-quest-btn').style.display = 'flex';
+            document.getElementById('bp-rewards').style.display = 'flex';
+        });
+        // CS2 button hover effect
+        startBpBtn.addEventListener('mouseenter', () => {
+            startBpBtn.style.background = 'linear-gradient(135deg, #2a5298 0%, #4a90e2 50%, #2a5298 100%)';
+            startBpBtn.style.boxShadow = '0 4px 12px rgba(74,144,226,0.4), inset 0 1px 0 rgba(255,255,255,0.2)';
+            new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {});
+        });
+        startBpBtn.addEventListener('mouseleave', () => {
+            startBpBtn.style.background = 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%)';
+            startBpBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)';
+        });
+        
 
-        const panel = document.createElement('div');
-        panel.id = 'team-panel';
-        panel.className = 'team-panel';
+    }
+    
+    const bpData = {
+        level: 1,
+        xp: 0,
+        maxXp: 1000
+    };
+    
+    const updateBattlePass = () => {
+        document.getElementById('bp-current-level').textContent = bpData.level;
+        document.getElementById('bp-current-xp').textContent = bpData.xp;
+        document.getElementById('bp-max-xp').textContent = bpData.maxXp;
+        const fillPercent = (bpData.xp / bpData.maxXp) * 100;
+        document.getElementById('bp-xp-fill').style.width = fillPercent + '%';
+        
+        document.querySelectorAll('.bp-reward').forEach(reward => {
+            const level = parseInt(reward.dataset.level);
+            const item = reward.querySelector('.bp-reward-item');
+            if(level <= bpData.level) {
+                item.classList.remove('locked');
+                item.classList.add('unlocked');
+            } else {
+                item.classList.remove('unlocked');
+                item.classList.add('locked');
+            }
+        });
+    };
+    
+    if(document.getElementById('bp-current-level')) {
+        updateBattlePass();
+    }
+    
+    const testLevelBtn = document.getElementById('test-level-up');
+    if(testLevelBtn) {
+        testLevelBtn.addEventListener('click', () => {
+            bpData.level++;
+            bpData.xp = 0;
+            
+            const targetReward = document.querySelector(`.bp-reward[data-level="${bpData.level}"]`);
+            if(!targetReward) return;
+            
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:999999;opacity:0;transition:opacity 0.3s;';
+            const content = document.createElement('div');
+            content.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;transition:opacity 0.3s;width:100%;';
+            content.innerHTML = `
+                <div style="font-size:1.5rem;color:#ffb347;text-transform:uppercase;letter-spacing:0.2em;margin-bottom:1rem;opacity:0.8;animation:fadeIn 0.4s;">НОВЫЙ УРОВЕНЬ</div>
+                <div style="font-size:8rem;font-weight:900;opacity:0;margin:0;">${bpData.level}</div>
+                <div style="font-size:1.2rem;color:#a0d0ff;text-transform:uppercase;letter-spacing:0.15em;margin-top:1rem;animation:fadeIn 0.4s;">РАЗБЛОКИРОВАНЫ НОВЫЕ НАГРАДЫ</div>
+            `;
+            const levelNum = document.createElement('div');
+            levelNum.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:8rem;font-weight:900;color:#ffb347;text-shadow:0 0 40px rgba(255,179,71,0.8);z-index:1000001;animation:levelPulse 0.6s ease-out;';
+            levelNum.textContent = bpData.level;
+            const style = document.createElement('style');
+            style.textContent = '@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}@keyframes levelPulse{0%{transform:translate(-50%,-50%) scale(0.3);opacity:0}50%{transform:translate(-50%,-50%) scale(1.2)}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}';
+            document.head.appendChild(style);
+            overlay.appendChild(content);
+            document.body.appendChild(overlay);
+            document.body.appendChild(levelNum);
+            new Audio('sounds/lastroundhalf.wav').play().catch(e => {});
+            setTimeout(() => overlay.style.opacity = '1', 10);
+            setTimeout(() => {
+                content.style.opacity = '0';
+                overlay.style.background = 'transparent';
+                setTimeout(() => {
+                    const rect = targetReward.getBoundingClientRect();
+                    levelNum.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    levelNum.style.fontSize = '1.5rem';
+                    levelNum.style.left = rect.left + rect.width / 2 + 'px';
+                    levelNum.style.top = rect.top + rect.height / 2 + 'px';
+                    levelNum.style.opacity = '0';
+                    setTimeout(() => {
+                        updateBattlePass();
+                        new Audio('sounds/premier_nextmapgroup.wav').play().catch(e => {});
+                        const item = targetReward.querySelector('.bp-reward-item');
+                        if(item) {
+                            item.style.animation = 'itemUnlock 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                            const unlockStyle = document.createElement('style');
+                            unlockStyle.textContent = '@keyframes itemUnlock{0%{transform:scale(0.8);opacity:0.5}50%{transform:scale(1.15) rotate(5deg)}75%{transform:scale(0.95) rotate(-3deg)}100%{transform:scale(1) rotate(0deg);opacity:1}}';
+                            document.head.appendChild(unlockStyle);
+                            setTimeout(() => {
+                                item.style.animation = '';
+                                unlockStyle.remove();
+                            }, 800);
+                        }
+                        if(targetReward.dataset.rewardType === 'music-kit') {
+                            attachMusicKitHandler(targetReward);
+                        }
+                        overlay.remove();
+                        levelNum.remove();
+                        style.remove();
+                    }, 600);
+                }, 300);
+            }, 2500);
+        });
+    }
+    
 
-        // header without API key input
-        const header = document.createElement('div'); header.className = 'tp-header';
-        const title = document.createElement('div'); title.className = 'tp-title'; title.textContent = teamName;
-        const closeBtn = document.createElement('button'); closeBtn.className = 'tp-close'; closeBtn.innerText = '✕';
-        closeBtn.addEventListener('click', closeTeamPanel);
-
-        header.appendChild(title);
-        header.appendChild(closeBtn);
-
-        panel.appendChild(header);
-
-        const playersWrap = document.createElement('div'); playersWrap.className = 'tp-players';
-        panel.appendChild(playersWrap);
-
-        // Append hidden panel first so we can measure its size, then position near cursor
-        document.body.appendChild(panel);
-        console.log('teamPanel: step 2 - appended to DOM');
-        panel.style.visibility = 'hidden';
-        panel.style.left = '0px';
-        panel.style.top = '0px';
-
-        // Position panel near cursor but keep inside viewport
-        const pad = 12;
-        const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-        const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-        const cursorX = ev.clientX || 0;
-        const cursorY = ev.clientY || 0;
-
-        // Measure after insertion
-        const pw = panel.offsetWidth || panel.getBoundingClientRect().width || 300;
-        const ph = panel.offsetHeight || panel.getBoundingClientRect().height || 200;
-        console.log('teamPanel: step 3 - measured', {pw, ph, cursorX, cursorY, vw, vh});
-
-        // Всегда слева от курсора
-        let left = cursorX - pw - pad;
-        let top = cursorY - Math.floor(ph/2);
-        // если ушло за левый край, ставим вплотную к краю
-        if (left < 8) left = 8;
-        // если ушло за верх, ставим вплотную к верху
-        if (top < 8) top = 8;
-        // если ушло за низ, сдвигаем вверх
-        if (top + ph > vh - 8) top = vh - ph - 8;
-
-        panel.style.left = left + 'px';
-        panel.style.top = top + 'px';
-        panel.style.visibility = 'visible';
-        console.log('teamPanel: step 4 - positioned', {left, top});
-
-        // Prepare steam ids
-        const steamIds = profiles.map(extractSteamId).filter(Boolean);
-        const avatarsById = await fetchAvatarsByApi(steamIds);
-
-        // render players
-        for(const url of profiles){
-            const row = document.createElement('div'); row.className = 'team-player';
-            const img = document.createElement('img');
-            const nameDiv = document.createElement('div'); nameDiv.className = 'tp-name';
-
-            const sid = extractSteamId(url);
-            if(sid && avatarsById[sid]){
-                const entry = avatarsById[sid];
-                if (typeof entry === 'string') {
-                    img.src = entry;
-                    nameDiv.textContent = `Player ${sid.slice(-5)}`;
-                } else if (typeof entry === 'object') {
-                    img.src = entry.avatar || 'https://via.placeholder.com/48x48?text=User';
-                    nameDiv.textContent = entry.name || `Player ${sid.slice(-5)}`;
-                } else {
-                    img.src = 'https://via.placeholder.com/48x48?text=User';
-                    nameDiv.textContent = `Player ${sid.slice(-5)}`;
+    
+    // Quest system
+    let questsOpen = false;
+    const questBtn = document.getElementById('bp-quest-btn');
+    const refreshBtn = document.getElementById('bp-refresh-btn');
+    const bpHeader = document.querySelector('.bp-header');
+    const bpRewards = document.querySelector('.bp-rewards');
+    
+    if(refreshBtn) {
+        let refreshTimeout;
+        const refreshTooltip = document.getElementById('refresh-tooltip');
+        if(refreshTooltip) {
+            document.body.appendChild(refreshTooltip);
+            refreshTooltip.style.position = 'fixed';
+            refreshTooltip.style.zIndex = '99999';
+            refreshTooltip.style.transition = 'opacity 0.2s ease';
+        }
+        refreshBtn.addEventListener('mouseenter', (e) => {
+            new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {});
+            if(!refreshTooltip) return;
+            refreshTimeout = setTimeout(() => {
+                const rect = refreshBtn.getBoundingClientRect();
+                refreshTooltip.style.visibility = 'visible';
+                refreshTooltip.style.display = 'block';
+                requestAnimationFrame(() => {
+                    const tooltipHeight = refreshTooltip.offsetHeight;
+                    refreshTooltip.style.left = rect.right + 20 + 'px';
+                    refreshTooltip.style.top = rect.top + rect.height / 2 - tooltipHeight / 2 + 80 + 'px';
+                    requestAnimationFrame(() => {
+                        refreshTooltip.style.opacity = '1';
+                    });
+                });
+            }, 500);
+        });
+        refreshBtn.addEventListener('mouseleave', () => {
+            clearTimeout(refreshTimeout);
+            if(refreshTooltip) {
+                refreshTooltip.style.opacity = '0';
+                refreshTooltip.style.visibility = 'hidden';
+            }
+        });
+        refreshBtn.addEventListener('click', () => {
+            new Audio('sounds/sidemenu_click_01.wav').play().catch(e => {});
+            location.reload();
+        });
+    }
+    
+    if(questBtn) {
+        let questTimeout;
+        const questTooltip = document.getElementById('quest-tooltip');
+        if(questTooltip) {
+            document.body.appendChild(questTooltip);
+            questTooltip.style.position = 'fixed';
+            questTooltip.style.zIndex = '99999';
+            questTooltip.style.display = 'none';
+            questTooltip.style.opacity = '0';
+            questTooltip.style.visibility = 'hidden';
+            questTooltip.style.transform = 'none';
+            questTooltip.style.left = 'auto';
+            questTooltip.style.top = 'auto';
+        }
+        questBtn.addEventListener('mouseenter', (e) => {
+            new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {});
+            if(!questTooltip) return;
+            questTimeout = setTimeout(() => {
+                const rect = questBtn.getBoundingClientRect();
+                questTooltip.style.display = 'block';
+                questTooltip.style.visibility = 'visible';
+                questTooltip.style.opacity = '0';
+                questTooltip.style.left = '0px';
+                questTooltip.style.top = '0px';
+                
+                const tooltipWidth = questTooltip.offsetWidth;
+                const tooltipHeight = questTooltip.offsetHeight;
+                
+                questTooltip.style.left = (rect.left - tooltipWidth - 20) + 'px';
+                questTooltip.style.top = (rect.top + (rect.height - tooltipHeight) / 2 + 3) + 'px';
+                questTooltip.style.opacity = '1';
+            }, 500);
+        });
+        questBtn.addEventListener('mouseleave', () => {
+            clearTimeout(questTimeout);
+            if(questTooltip) {
+                questTooltip.style.opacity = '0';
+                questTooltip.style.visibility = 'hidden';
+            }
+        });
+        questBtn.addEventListener('click', () => {
+            new Audio('sounds/sidemenu_click_01.wav').play().catch(e => {});
+            setTimeout(() => {
+                new Audio('sounds/cards_draw_01.wav').play().catch(e => {});
+            }, 50);
+            if(!questsOpen) {
+                document.getElementById('quest-icon').src = 'https://img.icons8.com/?size=100&id=11630&format=png&color=a0d0ff';
+                document.getElementById('quest-tooltip-text').textContent = 'Вернуться назад';
+                document.getElementById('quest-tooltip-desc').textContent = 'Закрыть квесты и вернуться к Battle Pass';
+                document.getElementById('bp-refresh-btn').style.display = 'flex';
+                bpRewards.style.transform = 'translateY(100vh)';
+                bpRewards.style.pointerEvents = 'none';
+                bpRewards.classList.add('quests-active');
+                bpHeader.style.transform = 'translateY(-69px)';
+                bpHeader.style.borderRadius = '0 0 20px 20px';
+                document.getElementById('page-battlepass').style.overflow = 'hidden';
+                
+                if(!document.getElementById('bp-quests')) {
+                    const discordUser = sessionStorage.getItem('discord_user');
+                    const userId = discordUser ? JSON.parse(discordUser).id : null;
+                    
+                    const questsDiv = document.createElement('div');
+                    questsDiv.id = 'bp-quests';
+                    questsDiv.className = 'bp-quests';
+                    questsDiv.innerHTML = '';
+                    
+                    if(userId) {
+                        fetch(`http://localhost:3000/progress/${userId}`)
+                        .then(r => r.json())
+                        .then(data => {
+                            questsDiv.insertAdjacentHTML('beforeend', `
+                                <div class="quest-item ${data.quest1 ? 'completed' : ''}">
+                                    <div class="quest-title">СМОТРЕТЬ ТРАНСЛЯЦИЮ 30 МИНУТ</div>
+                                    <div class="quest-progress">${Math.min(data.minutes, 30)} / 30</div>
+                                    <div class="quest-reward">+500 XP</div>
+                                </div>
+                                <div class="quest-item ${data.quest2 ? 'completed' : ''}">
+                                    <div class="quest-title">СМОТРЕТЬ ТРАНСЛЯЦИЮ 60 МИНУТ</div>
+                                    <div class="quest-progress">${Math.min(data.minutes, 60)} / 60</div>
+                                    <div class="quest-reward">+800 XP</div>
+                                </div>
+                                <div class="quest-item ${data.quest3 ? 'completed' : ''}">
+                                    <div class="quest-title">СМОТРЕТЬ ТРАНСЛЯЦИЮ 120 МИНУТ</div>
+                                    <div class="quest-progress">${Math.min(data.minutes, 120)} / 120</div>
+                                    <div class="quest-reward">+1500 XP</div>
+                                </div>
+                            `);
+                        });
+                    } else {
+                        questsDiv.insertAdjacentHTML('beforeend', `
+                            <div class="quest-item">
+                                <div class="quest-title">СМОТРЕТЬ ТРАНСЛЯЦИЮ 30 МИНУТ</div>
+                                <div class="quest-progress">0 / 30</div>
+                                <div class="quest-reward">+500 XP</div>
+                            </div>
+                            <div class="quest-item">
+                                <div class="quest-title">СМОТРЕТЬ ТРАНСЛЯЦИЮ 60 МИНУТ</div>
+                                <div class="quest-progress">0 / 60</div>
+                                <div class="quest-reward">+800 XP</div>
+                            </div>
+                            <div class="quest-item">
+                                <div class="quest-title">СМОТРЕТЬ ТРАНСЛЯЦИЮ 120 МИНУТ</div>
+                                <div class="quest-progress">0 / 120</div>
+                                <div class="quest-reward">+1500 XP</div>
+                            </div>
+                        `);
+                    }
+                    
+                    setTimeout(() => {
+                        const refreshBtn = document.getElementById('refresh-quests-btn');
+                        if(refreshBtn) {
+                            refreshBtn.addEventListener('mouseenter', () => {
+                                new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {});
+                                refreshBtn.style.boxShadow = '0 6px 20px rgba(255,179,71,0.5)';
+                            });
+                            refreshBtn.addEventListener('mouseleave', () => {
+                                refreshBtn.style.boxShadow = '0 4px 15px rgba(255,179,71,0.3)';
+                            });
+                            refreshBtn.addEventListener('click', () => {
+                                new Audio('sounds/sidemenu_click_01.wav').play().catch(e => {});
+                                location.reload();
+                            });
+                        }
+                    }, 100);
+                    document.querySelector('#page-battlepass .page-content').appendChild(questsDiv);
+                    setTimeout(() => {
+                        questsDiv.classList.add('active');
+                        questsDiv.querySelectorAll('.quest-item').forEach(item => {
+                            item.addEventListener('mouseenter', () => {
+                                new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {});
+                            });
+                        });
+                    }, 50);
+                }
+                questsOpen = true;
+            } else {
+                document.getElementById('quest-icon').src = 'https://img.icons8.com/?size=100&id=11765&format=png&color=a0d0ff';
+                document.getElementById('quest-tooltip-text').textContent = 'Открыть квесты';
+                document.getElementById('quest-tooltip-desc').textContent = 'Просмотреть доступные квестовые задания';
+                document.getElementById('bp-refresh-btn').style.display = 'none';
+                const questsDiv = document.getElementById('bp-quests');
+                if(questsDiv) {
+                    questsDiv.classList.remove('active');
+                    setTimeout(() => questsDiv.remove(), 400);
+                }
+                bpHeader.style.transform = 'translateY(0)';
+                bpHeader.style.borderRadius = '4px';
+                bpRewards.style.transform = 'translateY(0)';
+                setTimeout(() => {
+                    bpRewards.style.pointerEvents = 'auto';
+                    bpRewards.classList.remove('quests-active');
+                }, 400);
+                document.getElementById('page-battlepass').style.overflow = 'visible';
+                
+                questsOpen = false;
+            }
+        });
+    }
+    
+    const navSounds = {
+        main: 'sounds/mainmenu_press_home_01.wav',
+        settings: 'sounds/mainmenu_press_settings_02.wav',
+        inventory: 'sounds/mainmenu_press_inventory_02.wav',
+        battlepass: 'sounds/mainmenu_press_shop_01.wav',
+        seasons: 'sounds/mainmenu_press_news_01.wav'
+    };
+    
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('mouseenter', () => new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {}));
+        btn.addEventListener('click', () => {
+            const targetPage = btn.dataset.page;
+            if(targetPage === currentPage) return;
+            new Audio(navSounds[targetPage] || 'sounds/inventory_item_select_01.wav').play().catch(e => {});
+            const currentPageEl = document.getElementById(`page-${currentPage}`);
+            const targetPageEl = document.getElementById(`page-${targetPage}`);
+            
+            currentPageEl.classList.remove('active');
+            targetPageEl.classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentPage = targetPage;
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            
+            if(targetPage === 'battlepass') {
+                document.body.classList.add('winter-theme');
+                document.getElementById('snowfall').classList.add('active');
+                if(!window.snowInterval) {
+                    window.snowInterval = setInterval(() => {
+                        const snowflake = document.createElement('div');
+                        snowflake.className = 'snowflake';
+                        snowflake.textContent = '❄';
+                        snowflake.style.left = Math.random() * 100 + '%';
+                        snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                        snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                        document.getElementById('snowfall').appendChild(snowflake);
+                        setTimeout(() => snowflake.remove(), 5000);
+                    }, 200);
                 }
             } else {
-                img.src = 'https://via.placeholder.com/48x48?text=User';
-                nameDiv.textContent = `Player ${url.split('/').pop()}`; // Показываем часть URL
+                document.body.classList.remove('winter-theme');
+                document.getElementById('snowfall').classList.remove('active');
+                if(window.snowInterval) {
+                    clearInterval(window.snowInterval);
+                    window.snowInterval = null;
+                }
             }
-
-            row.appendChild(img);
-            row.appendChild(nameDiv);
-            playersWrap.appendChild(row);
-        }
-
-        // Attach global listeners to close
-        setTimeout(()=>{ // allow immediate click to not trigger close
-            document.addEventListener('click', onDocClickForPanel);
-            document.addEventListener('keydown', onEscClose);
-        }, 50);
-        } catch (err) {
-            console.error('showTeamPanel error', err);
-            closeTeamPanel();
-        }
+        });
+    });
+    
+    
+    const musicVolumeSlider = document.getElementById('music-volume');
+    const musicVolumeInput = document.getElementById('music-volume-input');
+    
+    if(musicVolumeSlider && musicVolumeInput) {
+        musicVolumeSlider.addEventListener('input', (e) => {
+            musicVolumeInput.value = e.target.value;
+            bgMusic.volume = e.target.value / 100;
+        });
+        musicVolumeInput.addEventListener('input', (e) => {
+            let val = parseInt(e.target.value) || 0;
+            if(val < 0) val = 0;
+            if(val > 100) val = 100;
+            musicVolumeSlider.value = val;
+            musicVolumeInput.value = val;
+            bgMusic.volume = val / 100;
+        });
     }
+    
+    // Tooltip positioning
+    document.querySelectorAll('.inventory-item').forEach(item => {
+        const tooltip = item.querySelector('.item-tooltip');
+        if(!tooltip) return;
+        
+        item.addEventListener('mouseenter', (e) => {
+            const rect = item.getBoundingClientRect();
+            tooltip.style.left = (rect.right + 20) + 'px';
+            tooltip.style.top = (rect.top + rect.height / 2 - 60) + 'px';
+            tooltip.style.transform = 'translateY(-50%)';
+        });
+    });
+    
+    // Music kit unlock animation
+    const attachMusicKitHandler = (reward) => {
+        const item = reward.querySelector('.bp-reward-item');
+        if(!item.classList.contains('unlocked')) return;
+        
+        item.addEventListener('click', () => {
+            const musicFile = reward.dataset.musicFile;
+            const imgSrc = reward.querySelector('.bp-reward-image').src;
+            const name = reward.querySelector('.bp-reward-name').textContent;
+            const rarityText = musicFile.includes('Last Christmas') ? 'Редкий' : 'Легендарный';
+            const rarityColor = musicFile.includes('Last Christmas') ? '#4b69ff' : '#d32ce6';
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'music-unlock-overlay';
+            overlay.innerHTML = `
+                <div class="inspect-container">
+                    <img src="${imgSrc}" class="inspect-image" alt="${name}" style="animation:itemReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                    <div class="inspect-info" style="animation:fadeInUp 0.8s ease-out 0.5s both;">
+                        <div style="color:#4CAF50;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:0.5rem;font-weight:700;">ПОЛУЧЕНО</div>
+                        <div class="inspect-class">Музыкальный набор</div>
+                        <div class="inspect-title">${name}</div>
+                        <div class="inspect-rarity" style="color:${rarityColor};">${rarityText}</div>
+                        <div style="color:#888;font-size:0.85rem;margin-top:0.5rem;">Коллекция: Winter 2026</div>
+                    </div>
+                    <button class="inspect-close" style="display:none;">×</button>
+                    <div class="inspect-hint">Клик для закрытия</div>
+                </div>
+            `;
+            const animStyle = document.createElement('style');
+            animStyle.textContent = '@keyframes itemReveal{0%{transform:scale(0.3) rotateY(180deg);opacity:0}60%{transform:scale(1.1) rotateY(0deg)}100%{transform:scale(1) rotateY(0deg);opacity:1}}@keyframes fadeInUp{0%{transform:translateY(30px);opacity:0}100%{transform:translateY(0);opacity:1}}';
+            document.head.appendChild(animStyle);
+            
+            document.body.appendChild(overlay);
+            
+            const inspectSound = new Audio('sounds/inspect_weapon_01.wav');
+            inspectSound.play().catch(e => {});
+            
+            const originalVolume = bgMusic.volume;
+            let fadeOut = setInterval(() => {
+                if(bgMusic.volume > 0.05) {
+                    bgMusic.volume -= 0.05;
+                } else {
+                    bgMusic.volume = 0;
+                    clearInterval(fadeOut);
+                }
+            }, 50);
+            
+            const music = new Audio(musicFile);
+            music.volume = musicVolumeSlider ? musicVolumeSlider.value / 100 : 0.3;
+            const musicTimeout = setTimeout(() => music.play().catch(e => {}), 1000);
+            
+            setTimeout(() => overlay.classList.add('active'), 10);
+            
+            const closeUnlock = () => {
+                overlay.classList.remove('active');
+                clearTimeout(musicTimeout);
+                music.pause();
+                music.currentTime = 0;
+                clearInterval(fadeOut);
+                bgMusic.volume = originalVolume;
+                const musicType = reward.dataset.musicFile.includes('Last Christmas') ? 'lastchristmas' : 'perviyraz';
+                const inventoryItem = document.querySelector(`.inventory-item[data-music="${musicType}"]`);
+                if(inventoryItem) inventoryItem.style.display = 'flex';
+                setTimeout(() => {
+                    overlay.remove();
+                    animStyle.remove();
+                }, 300);
+            };
+            
+            setTimeout(() => {
+                overlay.addEventListener('click', closeUnlock);
+            }, 2000);
+            document.addEventListener('keydown', function escHandler(e) {
+                if(e.key === 'Escape') {
+                    closeUnlock();
+                    document.removeEventListener('keydown', escHandler);
+                }
+            });
+        });
+    };
+    
+    document.querySelectorAll('.bp-reward[data-reward-type="music-kit"]').forEach(reward => {
+        attachMusicKitHandler(reward);
+    });
+    
+    // Inspect mode
+    const showInspect = (kit) => {
+        const musicType = kit.dataset.music;
+        const imgSrc = kit.querySelector('.item-image').src;
+        const name = kit.querySelector('.item-name').textContent;
+        const rarity = kit.querySelector('.item-rarity').textContent;
+        const rarityClass = kit.querySelector('.item-rarity').className;
+        const collection = kit.querySelector('.tooltip-details .tooltip-detail-value') ? kit.querySelector('.tooltip-details .tooltip-detail-value').textContent : 'Counter-Strike';
+        const rarityValue = kit.querySelectorAll('.tooltip-details .tooltip-detail-value')[1];
+        const rarityColor = rarityValue ? window.getComputedStyle(rarityValue).color : '';
+        
+        const overlay = document.createElement('div');
+        overlay.className = 'inspect-overlay';
+        overlay.innerHTML = `
+            <div class="inspect-container">
+                <img src="${imgSrc}" class="inspect-image" alt="${name}" style="animation:itemReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                <div class="inspect-info" style="animation:fadeInUp 0.8s ease-out 0.5s both;">
+                    <div class="inspect-class">Музыкальный набор</div>
+                    <div class="inspect-title">${name}</div>
+                    <div class="inspect-rarity" style="color:${rarityColor || (rarityClass.includes('rare') ? '#4b69ff' : '#888')}">${rarity}</div>
+                    <div style="color:#888;font-size:0.85rem;margin-top:0.5rem;">Коллекция: ${collection}</div>
+                </div>
+                <button class="inspect-close">×</button>
+                <div class="inspect-hint">ESC или клик для закрытия</div>
+            </div>
+        `;
+        const inspectAnimStyle = document.createElement('style');
+        inspectAnimStyle.textContent = '@keyframes itemReveal{0%{transform:scale(0.3) rotateY(180deg);opacity:0}60%{transform:scale(1.1) rotateY(0deg)}100%{transform:scale(1) rotateY(0deg);opacity:1}}@keyframes fadeInUp{0%{transform:translateY(30px);opacity:0}100%{transform:translateY(0);opacity:1}}';
+        document.head.appendChild(inspectAnimStyle);
+        
+        document.body.appendChild(overlay);
+        new Audio('sounds/item_showcase_sticker_01.wav').play().catch(e => {});
+        
+        setTimeout(() => overlay.classList.add('active'), 10);
+        
+        const closeInspect = () => {
+            new Audio('sounds/inventory_item_close_01.wav').play().catch(e => {});
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                overlay.remove();
+                inspectAnimStyle.remove();
+            }, 300);
+        };
+        
+        overlay.querySelector('.inspect-close').addEventListener('click', closeInspect);
+        overlay.addEventListener('click', (e) => {
+            if(e.target === overlay) closeInspect();
+        });
+        
+        document.addEventListener('keydown', function escHandler(e) {
+            if(e.key === 'Escape') {
+                closeInspect();
+                document.removeEventListener('keydown', escHandler);
+            }
+        });
+    };
+    
+    // Context menu for music kits
+    let contextMenu = null;
+    
+    const showContextMenu = (e, kit) => {
+        if(!requireAuth()) return;
+        e.preventDefault();
+        
+        const musicType = kit.dataset.music;
+        const isEquipped = kit.classList.contains('active');
+        
+        if(contextMenu) contextMenu.remove();
+        
+        contextMenu = document.createElement('div');
+        contextMenu.className = 'cs2-context-menu';
+        contextMenu.style.left = e.pageX + 'px';
+        contextMenu.style.top = e.pageY + 'px';
+        
+        const inspectItem = document.createElement('div');
+        inspectItem.className = 'cs2-context-item';
+        inspectItem.textContent = 'Осмотреть';
+        inspectItem.addEventListener('mouseenter', () => {
+            new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {});
+        });
+        inspectItem.addEventListener('click', () => {
+            showInspect(kit);
+            contextMenu.remove();
+            contextMenu = null;
+        });
+        
+        contextMenu.appendChild(inspectItem);
+        
+        if(!isEquipped) {
+            const menuItem = document.createElement('div');
+            menuItem.className = 'cs2-context-item';
+            menuItem.textContent = 'Применить набор музыки';
+            
+            menuItem.addEventListener('mouseenter', () => {
+                new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {});
+            });
+            
+            menuItem.addEventListener('click', () => {
+                document.querySelectorAll('.music-kit').forEach(k => {
+                    k.classList.remove('active');
+                    const status = k.querySelector('.tooltip-status');
+                    if(status) {
+                        status.classList.remove('equipped');
+                        status.classList.add('not-equipped');
+                        status.textContent = 'НЕ ЭКИПИРОВАН';
+                    }
+                });
+                
+                kit.classList.add('active');
+                const status = kit.querySelector('.tooltip-status');
+                if(status) {
+                    status.classList.remove('not-equipped');
+                    status.classList.add('equipped');
+                    status.textContent = 'ЭКИПИРОВАН';
+                }
+                
+                currentMusicKit = musicType;
+                localStorage.setItem('music_kit', musicType);
+                bgMusic.pause();
+                currentTrackIndex = 0;
+                bgMusic.volume = musicVolumeSlider ? musicVolumeSlider.value / 100 : 0.3;
+                playNextTrack();
+                const acceptSound = new Audio('sounds/inventory_new_item_accept_01.wav');
+                acceptSound.volume = 0.5;
+                acceptSound.play().catch(e => {});
+                
+                contextMenu.remove();
+                contextMenu = null;
+            });
+            
+            contextMenu.appendChild(menuItem);
+        }
+        
+        document.body.appendChild(contextMenu);
+        new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {});
+    };
+    
+    document.querySelectorAll('.music-kit').forEach(kit => {
+        kit.addEventListener('mouseenter', () => {
+            const hoverSound = new Audio('sounds/sidemenu_rollover_02.wav');
+            hoverSound.volume = 0.3;
+            hoverSound.play().catch(e => {});
+        });
+        kit.addEventListener('click', (e) => {
+            new Audio('sounds/sidemenu_click_01.wav').play().catch(err => {});
+            showContextMenu(e, kit);
+        });
+        kit.addEventListener('contextmenu', (e) => {
+            new Audio('sounds/sidemenu_click_01.wav').play().catch(err => {});
+            showContextMenu(e, kit);
+        });
+    });
+    
+    document.addEventListener('click', (e) => {
+        if(contextMenu && !contextMenu.contains(e.target) && !e.target.closest('.music-kit')) {
+            contextMenu.remove();
+            contextMenu = null;
+        }
+    });
+    
+    // Set active music kit on load
+    document.querySelectorAll('.music-kit').forEach(kit => {
+        const status = kit.querySelector('.tooltip-status');
+        if(kit.dataset.music === currentMusicKit) {
+            kit.classList.add('active');
+            if(status) {
+                status.classList.remove('not-equipped');
+                status.classList.add('equipped');
+            }
+        } else {
+            if(status) {
+                status.classList.remove('equipped');
+                status.classList.add('not-equipped');
+            }
+        }
+    });
+    
+    document.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+    });
+    
+    document.addEventListener('copy', (e) => e.preventDefault());
+    document.addEventListener('cut', (e) => e.preventDefault());
+    document.addEventListener('paste', (e) => e.preventDefault());
+    document.addEventListener('dragstart', (e) => e.preventDefault());
+    document.addEventListener('selectstart', (e) => {
+        if(!e.target.matches('input, textarea')) e.preventDefault();
+    });
+    
+    // Add hover sounds for tournament elements
+    document.querySelectorAll('.bracket-match, .match-card, .players-table tbody tr').forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            new Audio('sounds/sidemenu_rollover_02.wav').play().catch(e => {});
+        });
+    });
+    
+    document.addEventListener('click', (e) => {
+        if(e.target.matches('button, .inventory-item, .quest-item, .bp-reward, .season-card, .match-row, .day-title, .bracket-match, .match-card')) {
+            new Audio('sounds/sidemenu_click_01.wav').play().catch(err => {});
+        }
+    });
+    
 
-    // Expose showTeamPanel for testing and for handlers
-    window.__showTeamPanel = showTeamPanel;
-    // Also expose as global name so existing handlers calling showTeamPanel(...) work
-    window.showTeamPanel = showTeamPanel;
-})();
+});

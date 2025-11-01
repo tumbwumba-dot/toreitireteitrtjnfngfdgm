@@ -1,0 +1,83 @@
+/* Seasons Grid */
+.seasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.season-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    cursor: default;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+    position: relative;
+}
+
+.season-card:hover {
+    transform: translateY(-5px);
+}
+
+.season-card.autumn {
+    border-color: #ff4500;
+}
+
+.season-card.autumn:hover {
+    border-color: #ffa500;
+}
+
+.season-card.autumn.active {
+    border-color: #ffa500;
+    box-shadow: 0 0 20px rgba(255, 165, 0, 0.4);
+}
+
+.season-card.winter {
+    border-color: #4fc3f7;
+}
+
+.season-card.winter:hover {
+    border-color: #81d4fa;
+}
+
+.season-card.winter.active {
+    border-color: #81d4fa;
+    box-shadow: 0 0 20px rgba(129, 212, 250, 0.4);
+}
+
+.season-icon {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+}
+
+.season-name {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.season-card.autumn .season-name {
+    color: #ffa500;
+}
+
+.season-card.winter .season-name {
+    color: #81d4fa;
+}
+
+.season-status {
+    font-size: 1rem;
+    color: #999;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.season-card.active .season-status {
+    color: #00ff00;
+}
