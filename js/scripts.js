@@ -205,6 +205,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const activateSound = () => {
         soundOverlay.remove();
+        soundFiles.forEach(src => {
+            const audio = new Audio(src);
+            audio.preload = 'auto';
+            audio.load();
+            preloadedSounds[src] = audio;
+        });
         new Audio('sounds/inventory_new_item_accept_01.wav').play().catch(e => {});
         checkAuth();
         if(currentUserId) {
