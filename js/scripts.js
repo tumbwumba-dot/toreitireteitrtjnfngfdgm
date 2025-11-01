@@ -225,10 +225,6 @@ document.addEventListener('DOMContentLoaded', function() {
     soundOverlay.addEventListener('click', activateSound);
     
     const pages = ['inventory', 'friends', 'battlepass', 'main', 'leaderboard', 'seasons', 'settings'];
-    
-    // Remove test button from production
-    const testBtn = document.getElementById('test-level-up');
-    if(testBtn) testBtn.remove();
     let currentPage = 'main';
     
     let touchStartX = 0;
@@ -271,8 +267,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const rewards = document.getElementById('bp-rewards');
             if(startContainer) startContainer.style.display = 'none';
             if(levelContainer) levelContainer.style.display = 'block';
-            if(questBtn) questBtn.style.display = 'flex';
             if(rewards) rewards.style.display = 'flex';
+            if(questBtn && bpData.level < 15) questBtn.style.display = 'flex';
             if(currentUserId) saveUserData('bp_started', true);
         });
         // CS2 button hover effect
@@ -314,8 +310,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const rewards = document.getElementById('bp-rewards');
             if(startContainer) startContainer.style.display = 'none';
             if(levelContainer) levelContainer.style.display = 'block';
-            if(questBtn) questBtn.style.display = 'flex';
             if(rewards) rewards.style.display = 'flex';
+            if(questBtn && bpData.level < 15) questBtn.style.display = 'flex';
         }
         
         const collectedRewards = loadUserData('collected_rewards', []);
