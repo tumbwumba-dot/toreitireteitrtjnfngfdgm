@@ -219,10 +219,6 @@ document.addEventListener('DOMContentLoaded', function() {
     soundOverlay.addEventListener('click', activateSound);
     
     const pages = ['inventory', 'friends', 'battlepass', 'main', 'leaderboard', 'seasons', 'settings'];
-    
-    // Remove test button from production
-    const testBtn = document.getElementById('test-level-up');
-    if(testBtn) testBtn.remove();
     let currentPage = 'main';
     
     let touchStartX = 0;
@@ -409,6 +405,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if(currentUserId) saveUserData('battlepass', bpData);
         updateLeaderboard();
     };
+    
+    const setLevelBtn = document.getElementById('set-level-btn');
+    if(setLevelBtn) {
+        setLevelBtn.addEventListener('click', () => {
+            const input = document.getElementById('set-level-input');
+            const targetLevel = parseInt(input.value);
+            if(targetLevel < 1 || targetLevel > 15) return;
+            bpData.level = targetLevel;
+            bpData.xp = 0;
+            updateBattlePass();
+            if(currentUserId) saveUserData('battlepass', bpData);
+            new Audio('sounds/inventory_new_item_accept_01.wav').play().catch(e => {});
+        });
+    }
     
     const testLevelBtn = document.getElementById('test-level-up');
     if(testLevelBtn) {
