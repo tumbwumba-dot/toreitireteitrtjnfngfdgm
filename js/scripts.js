@@ -104,6 +104,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
     
+    const soundFiles = [
+        'sounds/inventory_new_item_accept_01.wav',
+        'sounds/sidemenu_rollover_02.wav',
+        'sounds/sidemenu_click_01.wav',
+        'sounds/mainmenu_press_home_01.wav',
+        'sounds/mainmenu_press_settings_02.wav',
+        'sounds/mainmenu_press_inventory_02.wav',
+        'sounds/mainmenu_press_shop_01.wav',
+        'sounds/mainmenu_press_news_01.wav'
+    ];
+    const preloadedSounds = {};
+    
     const soundOverlay = document.createElement('div');
     soundOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999999;display:flex;align-items:center;justify-content:center;';
     soundOverlay.innerHTML = '<div style="text-align:center;font-family:Geogrotesque,Arial,sans-serif;"><h2 style="color:#ffa500;font-size:2.5rem;font-weight:900;margin-bottom:2rem;">НАЖМИТЕ ДЛЯ АКТИВАЦИИ</h2></div>';
@@ -153,6 +165,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const activateSound = () => {
         soundOverlay.style.opacity = '0';
         soundOverlay.style.transition = 'opacity 0.5s';
+        soundFiles.forEach(src => {
+            const audio = new Audio(src);
+            audio.preload = 'auto';
+            audio.load();
+            preloadedSounds[src] = audio;
+        });
         setTimeout(() => soundOverlay.remove(), 500);
         new Audio('sounds/inventory_new_item_accept_01.wav').play().catch(e => {});
         playNextTrack();
